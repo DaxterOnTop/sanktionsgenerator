@@ -5,14 +5,12 @@ export default function SanktionGenerator() {
     name: '',
     spielerId: '',
     beschuldigung: '',
-    sanktionen: {
-      hl: { checked: false, value: '' },
-      ngrunden: { checked: false, value: '' },
-      lobbyarbeit: { checked: false, value: '' },
-      geldstrafe: { checked: false, value: '' },
-      strike: { checked: false, value: '' },
-      kuendigung: { checked: false, value: false },
-    },
+    hl: '',
+    ngrunden: '',
+    lobbyarbeit: '',
+    geldstrafe: '',
+    strike: '',
+    kuendigung: false,
     autorName: '',
     abteilung: '',
     rolle: '',
@@ -21,25 +19,18 @@ export default function SanktionGenerator() {
   const [sanktionText, setSanktionText] = useState('')
 
   const generateSanktion = () => {
+    if (!form.name || !form.beschuldigung) {
+      alert('Bitte fülle Name und Verstoß aus!')
+      return
+    }
+
     let strafenList = []
-    if (form.sanktionen.hl.checked && form.sanktionen.hl.value) {
-      strafenList.push(`- ${form.sanktionen.hl.value}min Humane Labs`)
-    }
-    if (form.sanktionen.ngrunden.checked && form.sanktionen.ngrunden.value) {
-      strafenList.push(`- ${form.sanktionen.ngrunden.value}x NG-Runden`)
-    }
-    if (form.sanktionen.lobbyarbeit.checked && form.sanktionen.lobbyarbeit.value) {
-      strafenList.push(`- ${form.sanktionen.lobbyarbeit.value}min Lobbyarbeit`)
-    }
-    if (form.sanktionen.geldstrafe.checked && form.sanktionen.geldstrafe.value) {
-      strafenList.push(`- $${parseInt(form.sanktionen.geldstrafe.value).toLocaleString('de-DE')},- Geldstrafe`)
-    }
-    if (form.sanktionen.strike.checked && form.sanktionen.strike.value) {
-      strafenList.push(`- ${form.sanktionen.strike.value}x Strike`)
-    }
-    if (form.sanktionen.kuendigung.checked) {
-      strafenList.push(`- Kündigung`)
-    }
+    if (form.hl) strafenList.push(`- ${form.hl}min Humane Labs`)
+    if (form.ngrunden) strafenList.push(`- ${form.ngrunden}x NG-Runden`)
+    if (form.lobbyarbeit) strafenList.push(`- ${form.lobbyarbeit}min Lobbyarbeit`)
+    if (form.geldstrafe) strafenList.push(`- $${parseInt(form.geldstrafe).toLocaleString('de-DE')},- Geldstrafe`)
+    if (form.strike) strafenList.push(`- ${form.strike}x Strike`)
+    if (form.kuendigung) strafenList.push(`- Kündigung`)
 
     const text = `Sehr geehrter @${form.name},
 
@@ -63,138 +54,157 @@ Mit freundlichen Grüßen,
     setSanktionText(text)
   }
 
-  const copySanktion = () => {
-    navigator.clipboard.writeText(sanktionText)
-    alert('Sanktion in die Zwischenablage kopiert!')
-  }
-
-  const handleSanktionChange = (key, subKey, value) => {
-    setForm(prev => ({
-      ...prev,
-      sanktionen: {
-        ...prev.sanktionen,
-        [key]: {
-          ...prev.sanktionen[key],
-          [subKey]: value,
-        }
-      }
-    }))
+  const copySanktion = async () => {
+    try {
+      await navigator.clipboard.writeText(sanktionText)
+      alert('✓ In Zwischenablage kopiert!')
+    } catch (err) {
+      alert('Fehler beim Kopieren')
+    }
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div className="ml-80 p-8 bg-[#0f0f0f] min-h-screen">
       <h2 className="text-3xl font-bold mb-6">📋 Sanktion Generator</h2>
 
-      <div className="grid grid-cols-2 gap-8">
-        {/* Left: Form */}
+      <div className="grid grid-cols-2 gap-8 max-w-6xl">
+        {/* Form */}
         <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Name des Beschuldigten</label>
-            <input
-              type="text"
-              placeholder="Vorname Nachname"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full px-4 py-2 bg-dark-input border border-gray-600 rounded text-white placeholder-gray-500"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Name des Beschuldigten"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="w-full px-4 py-2 bg-[#2a2a2a] border border-gray-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+          />
 
-          <div>
-            <label className="block text-sm font-semibold mb-2">Spieler ID</label>
-            <input
-              type="text"
-              placeholder="z.B. 12345"
-              value={form.spielerId}
-              onChange={(e) => setForm({ ...form, spielerId: e.target.value })}
-              className="w-full px-4 py-2 bg-dark-input border border-gray-600 rounded text-white placeholder-gray-500"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Spieler ID"
+            value={form.spielerId}
+            onChange={(e) => setForm({ ...form, spielerId: e.target.value })}
+            className="w-full px-4 py-2 bg-[#2a2a2a] border border-gray-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+          />
 
-          <div>
-            <label className="block text-sm font-semibold mb-2">Verstoß/Beschuldigung</label>
-            <textarea
-              placeholder="z.B. §1.0 Respektloses Verhalten"
-              value={form.beschuldigung}
-              onChange={(e) => setForm({ ...form, beschuldigung: e.target.value })}
-              className="w-full px-4 py-2 bg-dark-input border border-gray-600 rounded text-white placeholder-gray-500 h-24"
-            />
-          </div>
+          <textarea
+            placeholder="Verstoß (z.B. §1.0 Respektloses Verhalten)"
+            value={form.beschuldigung}
+            onChange={(e) => setForm({ ...form, beschuldigung: e.target.value })}
+            className="w-full px-4 py-2 bg-[#2a2a2a] border border-gray-600 rounded text-white placeholder-gray-500 h-20 focus:outline-none focus:border-blue-500 resize-none"
+          />
 
-          <div className="border-t border-gray-700 pt-4">
+          <div className="bg-[#1a1a1a] p-4 rounded border border-gray-700">
             <h3 className="font-semibold mb-3">Sanktionen</h3>
-            <div className="space-y-3">
-              {[
-                { key: 'hl', label: 'Humane Labs', unit: 'min' },
-                { key: 'ngrunden', label: 'NG-Runden', unit: 'x' },
-                { key: 'lobbyarbeit', label: 'Lobbyarbeit', unit: 'min' },
-                { key: 'geldstrafe', label: 'Geldstrafe', unit: '$' },
-                { key: 'strike', label: 'Strike', unit: 'x' },
-              ].map(({ key, label, unit }) => (
-                <div key={key} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={form.sanktionen[key].checked}
-                    onChange={(e) => handleSanktionChange(key, 'checked', e.target.checked)}
-                    className="w-4 h-4 cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    placeholder={`${unit} eingeben`}
-                    value={form.sanktionen[key].value}
-                    onChange={(e) => handleSanktionChange(key, 'value', e.target.value)}
-                    disabled={!form.sanktionen[key].checked}
-                    className="flex-1 px-3 py-1 bg-dark-input border border-gray-600 rounded text-white disabled:opacity-50"
-                  />
-                </div>
-              ))}
-              <div className="flex items-center gap-2">
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <input type="checkbox" id="hl" className="w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="min"
+                  value={form.hl}
+                  onChange={(e) => setForm({ ...form, hl: e.target.value })}
+                  className="flex-1 px-3 py-1 bg-[#2a2a2a] border border-gray-600 rounded text-white text-sm focus:outline-none"
+                />
+                <label htmlFor="hl" className="text-sm text-gray-300">Humane Labs</label>
+              </div>
+
+              <div className="flex gap-2">
+                <input type="checkbox" id="ng" className="w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="x"
+                  value={form.ngrunden}
+                  onChange={(e) => setForm({ ...form, ngrunden: e.target.value })}
+                  className="flex-1 px-3 py-1 bg-[#2a2a2a] border border-gray-600 rounded text-white text-sm focus:outline-none"
+                />
+                <label htmlFor="ng" className="text-sm text-gray-300">NG-Runden</label>
+              </div>
+
+              <div className="flex gap-2">
+                <input type="checkbox" id="lobby" className="w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="min"
+                  value={form.lobbyarbeit}
+                  onChange={(e) => setForm({ ...form, lobbyarbeit: e.target.value })}
+                  className="flex-1 px-3 py-1 bg-[#2a2a2a] border border-gray-600 rounded text-white text-sm focus:outline-none"
+                />
+                <label htmlFor="lobby" className="text-sm text-gray-300">Lobbyarbeit</label>
+              </div>
+
+              <div className="flex gap-2">
+                <input type="checkbox" id="geld" className="w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="$"
+                  value={form.geldstrafe}
+                  onChange={(e) => setForm({ ...form, geldstrafe: e.target.value })}
+                  className="flex-1 px-3 py-1 bg-[#2a2a2a] border border-gray-600 rounded text-white text-sm focus:outline-none"
+                />
+                <label htmlFor="geld" className="text-sm text-gray-300">Geldstrafe</label>
+              </div>
+
+              <div className="flex gap-2">
+                <input type="checkbox" id="strike" className="w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="x"
+                  value={form.strike}
+                  onChange={(e) => setForm({ ...form, strike: e.target.value })}
+                  className="flex-1 px-3 py-1 bg-[#2a2a2a] border border-gray-600 rounded text-white text-sm focus:outline-none"
+                />
+                <label htmlFor="strike" className="text-sm text-gray-300">Strike</label>
+              </div>
+
+              <div className="flex gap-2">
                 <input
                   type="checkbox"
-                  checked={form.sanktionen.kuendigung.checked}
-                  onChange={(e) => handleSanktionChange('kuendigung', 'checked', e.target.checked)}
-                  className="w-4 h-4 cursor-pointer"
+                  id="kuen"
+                  checked={form.kuendigung}
+                  onChange={(e) => setForm({ ...form, kuendigung: e.target.checked })}
+                  className="w-4 h-4"
                 />
-                <label className="text-white">Kündigung</label>
+                <label htmlFor="kuen" className="text-sm text-gray-300">Kündigung</label>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-700 pt-4 space-y-3">
-            <input
-              type="text"
-              placeholder="Ihr Name"
-              value={form.autorName}
-              onChange={(e) => setForm({ ...form, autorName: e.target.value })}
-              className="w-full px-4 py-2 bg-dark-input border border-gray-600 rounded text-white placeholder-gray-500"
-            />
-            <input
-              type="text"
-              placeholder="Abteilung (z.B. Intelligence Unit)"
-              value={form.abteilung}
-              onChange={(e) => setForm({ ...form, abteilung: e.target.value })}
-              className="w-full px-4 py-2 bg-dark-input border border-gray-600 rounded text-white placeholder-gray-500"
-            />
-            <input
-              type="text"
-              placeholder="Interner Rang/Rolle"
-              value={form.rolle}
-              onChange={(e) => setForm({ ...form, rolle: e.target.value })}
-              className="w-full px-4 py-2 bg-dark-input border border-gray-600 rounded text-white placeholder-gray-500"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Ihr Name"
+            value={form.autorName}
+            onChange={(e) => setForm({ ...form, autorName: e.target.value })}
+            className="w-full px-4 py-2 bg-[#2a2a2a] border border-gray-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+          />
+
+          <input
+            type="text"
+            placeholder="Abteilung (z.B. Intelligence Unit)"
+            value={form.abteilung}
+            onChange={(e) => setForm({ ...form, abteilung: e.target.value })}
+            className="w-full px-4 py-2 bg-[#2a2a2a] border border-gray-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+          />
+
+          <input
+            type="text"
+            placeholder="Rang/Rolle"
+            value={form.rolle}
+            onChange={(e) => setForm({ ...form, rolle: e.target.value })}
+            className="w-full px-4 py-2 bg-[#2a2a2a] border border-gray-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+          />
 
           <button
             onClick={generateSanktion}
-            className="w-full bg-accent hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded transition"
           >
             ✓ Sanktion Generieren
           </button>
         </div>
 
-        {/* Right: Preview */}
+        {/* Preview */}
         <div>
-          <h3 className="font-semibold mb-3">Vorschau Discord</h3>
-          <div className="bg-dark-sidebar p-4 rounded border border-gray-700 min-h-96 font-mono text-sm whitespace-pre-wrap break-words">
+          <h3 className="font-semibold mb-3">📋 Vorschau Discord</h3>
+          <div className="bg-[#1a1a1a] p-4 rounded border border-gray-700 min-h-96 font-mono text-sm whitespace-pre-wrap break-words overflow-auto text-gray-200">
             {sanktionText || '(Vorschau erscheint hier nach Generierung)'}
           </div>
           {sanktionText && (
@@ -202,7 +212,7 @@ Mit freundlichen Grüßen,
               onClick={copySanktion}
               className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition"
             >
-              📋 In Zwischenablage kopieren
+              📋 Kopieren
             </button>
           )}
         </div>
