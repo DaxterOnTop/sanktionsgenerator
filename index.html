@@ -4,336 +4,493 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanktionsgenerator</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-            background-color: #0f0f0f;
-            color: #e5e7eb;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            height: 100vh;
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0e27;
+            color: #c5c7c9;
+            font-family: 'Inter', -apple-system, sans-serif;
             overflow: hidden;
         }
-        .container {
+        .app-container {
             display: flex;
-            height: 100vh;
-        }
-        .sidebar {
-            width: 320px;
-            background-color: #1a1a1a;
-            border-right: 1px solid #2a2a2a;
-            padding: 2rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        .sidebar h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            white-space: nowrap;
-        }
-        .nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex: 1;
-        }
-        .nav-btn {
-            padding: 0.75rem 1rem;
-            border: none;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s;
-            text-align: left;
-            background: transparent;
-            color: #9ca3af;
-        }
-        .nav-btn:hover {
-            color: #e5e7eb;
-        }
-        .nav-btn.active {
-            background-color: #2563eb;
-            color: white;
-            font-weight: 600;
-        }
-        .main {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-        .section {
-            display: none;
-        }
-        .section.active {
-            display: block;
-        }
-        h2 {
-            font-size: 1.875rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #d1d5db;
-        }
-        input, textarea, select {
             width: 100%;
-            padding: 0.5rem 1rem;
-            background-color: #2a2a2a;
-            border: 1px solid #404040;
-            border-radius: 0.375rem;
-            color: white;
-            font-family: inherit;
-            margin-bottom: 1rem;
+            height: 100%;
+            flex-direction: row;
         }
-        input:focus, textarea:focus, select:focus {
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #0f1419;
+            border-bottom: 1px solid #1a1f2e;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 12px;
+            z-index: 100;
+            justify-content: space-between;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo {
+            background: #2563eb;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .header-title {
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 13px;
+        }
+        .header-info {
+            color: #888;
+            font-size: 11px;
+        }
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            color: #888;
+            font-size: 11px;
+        }
+        /* TABS */
+        .tabs-container {
+            position: fixed;
+            top: 50px;
+            left: 280px;
+            right: 0;
+            height: 45px;
+            background-color: #0a0e27;
+            border-bottom: 1px solid #1a1f2e;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+            z-index: 99;
+        }
+        .tab-button {
+            background: none;
+            border: none;
+            color: #666;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-button:hover {
+            color: #aaa;
+        }
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 50px;
+            width: 280px;
+            height: calc(100vh - 50px);
+            background-color: #0f1419;
+            border-right: 1px solid #1a1f2e;
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+        .sidebar-title {
+            font-weight: 700;
+            color: #999;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .sidebar-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .sidebar-input {
+            width: 100%;
+            background-color: #1a1f2e;
+            border: 1px solid #2a3142;
+            color: #c5c7c9;
+            padding: 6px 8px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+        .sidebar-input:focus {
             outline: none;
             border-color: #2563eb;
-            background-color: #2a2a2a;
+            background-color: #151a28;
         }
-        textarea {
-            resize: none;
-            min-height: 5rem;
-        }
-        .sanktionen-box {
-            background-color: #1a1a1a;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            border: 1px solid #2a2a2a;
-            margin-bottom: 1rem;
-        }
-        .sanktionen-box h3 {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-        }
-        .checkbox-group {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        .checkbox-group input[type="checkbox"] {
-            width: 1rem;
-            height: 1rem;
-            margin: 0;
-            flex-shrink: 0;
-        }
-        .checkbox-group input[type="text"] {
-            flex: 1;
-            margin: 0;
-            font-size: 0.875rem;
-        }
-        .checkbox-group label {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-        button.primary {
+        .sidebar-select {
             width: 100%;
-            padding: 0.75rem 1rem;
+            background-color: #1a1f2e;
+            border: 1px solid #2a3142;
+            color: #c5c7c9;
+            padding: 6px 8px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .sidebar-select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        .sidebar-button {
+            width: 100%;
             background-color: #2563eb;
             color: white;
             border: none;
-            border-radius: 0.375rem;
+            padding: 8px 12px;
+            border-radius: 3px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s;
-            margin-top: 1rem;
+            font-family: 'Inter', sans-serif;
         }
-        button.primary:hover {
+        .sidebar-button:hover {
             background-color: #1d4ed8;
         }
-        button.secondary {
+        /* MAIN CONTENT */
+        .main-content {
+            margin-top: 95px;
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            height: calc(100vh - 95px);
+            display: flex;
+            flex-direction: column;
+        }
+        .content-section {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .content-section.active {
+            display: flex;
+            flex-direction: column;
+        }
+        /* SANKTION SECTION */
+        .sanktion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+        .input-area, .preview-area {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
             width: 100%;
-            padding: 0.5rem 1rem;
+            background-color: #1a1f2e;
+            border: 1px solid #2a3142;
+            color: #c5c7c9;
+            padding: 8px 10px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        .sanctions-box {
+            background-color: #151a28;
+            border: 1px solid #2a3142;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .sanctions-box-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .sanction-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .sanction-item input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .sanction-item input[type="text"] {
+            flex: 1;
+            background-color: #1a1f2e;
+            border: 1px solid #2a3142;
+            color: #c5c7c9;
+            padding: 5px 8px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .sanction-item label {
+            font-size: 10px;
+            color: #666;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .generate-button {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .generate-button:hover {
+            background-color: #1d4ed8;
+        }
+        .preview-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .preview-box {
+            flex: 1;
+            background-color: #151a28;
+            border: 1px solid #2a3142;
+            border-radius: 3px;
+            padding: 12px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #c5c7c9;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+        .copy-button {
+            width: 100%;
             background-color: #16a34a;
             color: white;
             border: none;
-            border-radius: 0.375rem;
+            padding: 8px;
+            border-radius: 3px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s;
-            margin-top: 0.5rem;
+            margin-top: 10px;
+            display: none;
         }
-        button.secondary:hover {
+        .copy-button.show {
+            display: block;
+        }
+        .copy-button:hover {
             background-color: #15803d;
         }
-        .preview {
-            background-color: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 0.375rem;
-            padding: 1rem;
-            min-height: 24rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-            overflow-y: auto;
-            color: #d1d5db;
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-        .footer {
-            color: #6b7280;
-            font-size: 0.75rem;
-            border-top: 1px solid #2a2a2a;
-            padding-top: 1rem;
-            margin-top: auto;
+        ::-webkit-scrollbar-track {
+            background: #0a0e27;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a3142;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a4152;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <h1>🔵 SANKTIONSGENERATOR</h1>
-            <nav class="nav">
-                <button class="nav-btn active" onclick="switchTab('sanktion')">📋 Sanktion</button>
-                <button class="nav-btn" onclick="switchTab('akte')">📁 Akte</button>
-                <button class="nav-btn" onclick="switchTab('suspendierung')">⛔ Suspendierung</button>
-            </nav>
-            <div class="footer">
-                <p>Sanktionsgenerator</p>
-                <p>v1.0.0</p>
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">🔵 IU</div>
+                <div class="header-title">SANKTIONSGENERATOR</div>
+            </div>
+            <div class="header-info">Made by Sander Beck | 11.03.12 | Stand: 29.5.2026 | Keine Haftung für Falsche Ausgabe</div>
+            <div class="header-right">
+                <span>🔘 RESET</span>
+                <span>DESIGN</span>
             </div>
         </div>
 
-        <div class="main">
-            <!-- Sanktion Tab -->
-            <div id="sanktion" class="section active">
-                <h2>📋 Sanktion Generator</h2>
-                <div class="grid">
-                    <div>
-                        <label>Name des Beschuldigten</label>
-                        <input type="text" id="name" placeholder="Vorname Nachname">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">IDENTITÄT</div>
+                <div class="sidebar-label">BESCHULDIGTER MITARBEITER (NAME)</div>
+                <input type="text" id="name" class="sidebar-input" placeholder="Vorname Nachname">
+                
+                <div class="sidebar-label" style="margin-top: 12px;">REISEPASSNUMMER (BESCHULDIGER)</div>
+                <input type="text" id="spielerId" class="sidebar-input" placeholder="z.B. 123456">
+            </div>
 
-                        <label>Spieler ID</label>
-                        <input type="text" id="spielerId" placeholder="z.B. 12345">
+            <div class="sidebar-section">
+                <div class="sidebar-title">DEIN RANG</div>
+                <input type="text" id="deinRang" class="sidebar-input" placeholder="Dein Rang">
+            </div>
 
-                        <label>Verstoß</label>
-                        <textarea id="beschuldigung" placeholder="z.B. §1.0 Respektloses Verhalten"></textarea>
+            <div class="sidebar-section">
+                <div class="sidebar-title">INTERNER RANG</div>
+                <select id="internerRang" class="sidebar-select">
+                    <option>- Rang wählen -</option>
+                    <option>01. Officer</option>
+                    <option>02. Senior Officer</option>
+                    <option>03. Inspector</option>
+                    <option>04. Senior Inspector</option>
+                    <option>05. Lieutenant</option>
+                </select>
+            </div>
 
-                        <div class="sanktionen-box">
-                            <h3>Sanktionen</h3>
-                            <div class="checkbox-group">
+            <div class="sidebar-section">
+                <div class="sidebar-title">STATUTLICH ROLLE (OPTIONAL)</div>
+                <input type="text" id="rolle" class="sidebar-input" placeholder="z.B. Organisationsländer LSPD">
+            </div>
+
+            <div class="sidebar-section">
+                <button class="sidebar-button" onclick="generateSanktion()">✓ WEITER -</button>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs-container">
+            <button class="tab-button active" onclick="switchTab('sanktion', event)">| VORSCHAU</button>
+            <button class="tab-button" onclick="switchTab('akte', event)">📁 AKTE</button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- SANKTION TAB -->
+            <div id="sanktion" class="content-section active">
+                <div class="sanktion-grid">
+                    <!-- INPUT AREA -->
+                    <div class="input-area">
+                        <div class="input-group">
+                            <label>VERSTOß</label>
+                            <textarea id="beschuldigung" placeholder="z.B. §1.0 Respektloses Verhalten" style="height: 80px;"></textarea>
+                        </div>
+
+                        <div class="sanctions-box">
+                            <div class="sanctions-box-title">Sanktionen</div>
+                            <div class="sanction-item">
                                 <input type="checkbox" id="cb_hl">
-                                <input type="text" id="val_hl" placeholder="min">
-                                <label>Humane Labs</label>
+                                <input type="text" id="val_hl" placeholder="60">
+                                <label>min Humane Labs</label>
                             </div>
-                            <div class="checkbox-group">
+                            <div class="sanction-item">
                                 <input type="checkbox" id="cb_ng">
-                                <input type="text" id="val_ng" placeholder="x">
-                                <label>NG-Runden</label>
+                                <input type="text" id="val_ng" placeholder="3">
+                                <label>x NG-Runden</label>
                             </div>
-                            <div class="checkbox-group">
+                            <div class="sanction-item">
                                 <input type="checkbox" id="cb_lobby">
-                                <input type="text" id="val_lobby" placeholder="min">
-                                <label>Lobbyarbeit</label>
+                                <input type="text" id="val_lobby" placeholder="60">
+                                <label>min Lobbyarbeit</label>
                             </div>
-                            <div class="checkbox-group">
+                            <div class="sanction-item">
                                 <input type="checkbox" id="cb_geld">
-                                <input type="text" id="val_geld" placeholder="$">
+                                <input type="text" id="val_geld" placeholder="100.000">
                                 <label>Geldstrafe</label>
                             </div>
-                            <div class="checkbox-group">
+                            <div class="sanction-item">
                                 <input type="checkbox" id="cb_strike">
-                                <input type="text" id="val_strike" placeholder="x">
-                                <label>Strike</label>
+                                <input type="text" id="val_strike" placeholder="1">
+                                <label>x Strike</label>
                             </div>
-                            <div class="checkbox-group">
+                            <div class="sanction-item">
                                 <input type="checkbox" id="cb_kuen">
-                                <label>Kündigung</label>
+                                <label style="margin-left: 22px;">Kündigung</label>
                             </div>
                         </div>
 
-                        <label>Ihr Name</label>
-                        <input type="text" id="autorName" placeholder="">
-
-                        <label>Abteilung</label>
-                        <input type="text" id="abteilung" placeholder="z.B. Intelligence Unit">
-
-                        <label>Rang/Rolle</label>
-                        <input type="text" id="rolle" placeholder="">
-
-                        <button class="primary" onclick="generateSanktion()">✓ Sanktion Generieren</button>
+                        <button class="generate-button" onclick="generateSanktion()">SANKTION GENERIEREN</button>
                     </div>
 
-                    <div>
-                        <label>📋 Vorschau Discord</label>
-                        <div class="preview" id="preview"></div>
-                        <button class="secondary" onclick="copySanktion()" id="copyBtn" style="display: none;">📋 Kopieren</button>
+                    <!-- PREVIEW AREA -->
+                    <div class="preview-area">
+                        <div class="preview-label">📋 SANKTION</div>
+                        <div class="preview-box" id="preview">Keine Verstöße ausgewählt - Bitte links auswählen</div>
+                        <button class="copy-button" id="copyBtn" onclick="copySanktion()">📋 KOPIEREN</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Akte Tab -->
-            <div id="akte" class="section">
-                <h2>📁 Akten-Archiv</h2>
-                <p style="color: #6b7280;">Akten-Archiv - Coming Soon 🚧</p>
-            </div>
-
-            <!-- Suspendierung Tab -->
-            <div id="suspendierung" class="section">
-                <h2>⛔ Suspendierungs-Formular</h2>
-                <div style="max-width: 40rem;">
-                    <div style="background-color: #1a1a1a; padding: 1.5rem; border: 1px solid #2a2a2a; border-radius: 0.375rem;">
-                        <label>Vor- u. Nachname</label>
-                        <input type="text" placeholder="Name">
-
-                        <label>Reisepassnummer (ID)</label>
-                        <input type="text" placeholder="Spieler ID">
-
-                        <label>Grund</label>
-                        <textarea placeholder="Grund der Suspendierung"></textarea>
-
-                        <label>Sanktion: [Discord Post Link]</label>
-                        <input type="text" placeholder="Discord Nachrichtslink">
-
-                        <label>Ehem. Rang</label>
-                        <select>
-                            <option>– Rang wählen –</option>
-                            <option>01. Officer</option>
-                            <option>02. Senior Officer</option>
-                            <option>03. Inspector</option>
-                            <option>04. Senior Inspector</option>
-                            <option>05. Lieutenant</option>
-                        </select>
-
-                        <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">Aktueller Rang:</p>
-                        <p style="font-size: 1.125rem; font-weight: 600; color: #2563eb; margin-bottom: 1rem;">02. Sanctioned Officer</p>
-
-                        <label>Zeitraum</label>
-                        <input type="text" placeholder="Bis Sanktion erfüllt ist" value="Bis Sanktion erfüllt ist">
-
-                        <button class="primary">✓ Suspendierung Registrieren</button>
-                    </div>
-                </div>
+            <!-- AKTE TAB -->
+            <div id="akte" class="content-section">
+                <p style="color: #666;">Akte - Coming Soon 🚧</p>
             </div>
         </div>
     </div>
 
     <script>
-        function switchTab(tab) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
             event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
         }
 
         function generateSanktion() {
             const name = document.getElementById('name').value;
             const beschuldigung = document.getElementById('beschuldigung').value;
+            const deinRang = document.getElementById('deinRang').value;
             
             if (!name || !beschuldigung) {
                 alert('Bitte fülle Name und Verstoß aus!');
@@ -351,7 +508,7 @@
                 strafenList.push(`- ${document.getElementById('val_lobby').value}min Lobbyarbeit`);
             }
             if (document.getElementById('cb_geld').checked && document.getElementById('val_geld').value) {
-                strafenList.push(`- $${parseInt(document.getElementById('val_geld').value).toLocaleString('de-DE')},- Geldstrafe`);
+                strafenList.push(`- $${document.getElementById('val_geld').value},- Geldstrafe`);
             }
             if (document.getElementById('cb_strike').checked && document.getElementById('val_strike').value) {
                 strafenList.push(`- ${document.getElementById('val_strike').value}x Strike`);
@@ -359,10 +516,6 @@
             if (document.getElementById('cb_kuen').checked) {
                 strafenList.push(`- Kündigung`);
             }
-
-            const autorName = document.getElementById('autorName').value || '(Name)';
-            const abteilung = document.getElementById('abteilung').value || '(Abteilung)';
-            const rolle = document.getElementById('rolle').value || '(Rolle)';
 
             const text = `Sehr geehrter @${name},
 
@@ -379,12 +532,10 @@ Bis sie die Sanktion abgeleistet haben erhalten sie **Rang 2**. Achten sie beim 
 In Sanktionen wird **NICHT** unnötig kommentiert.
 
 Mit freundlichen Grüßen,
-@${autorName}
--# ${abteilung}
--# ${rolle}`;
+@${deinRang}`;
 
             document.getElementById('preview').textContent = text;
-            document.getElementById('copyBtn').style.display = 'block';
+            document.getElementById('copyBtn').classList.add('show');
         }
 
         function copySanktion() {
