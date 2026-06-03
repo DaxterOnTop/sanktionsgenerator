@@ -1,38 +1,16 @@
-# Sanktionsgenerator 🚔
+# Sanktionsgenerator
 
 GTA RP PD Sanktionsgenerator - Ein modernes Tool zur Verwaltung von Sanktionen und Akten.
 
 ## Features
 
-✅ **Sanktion Generator** - Schnell und einfach Discord-formatted Sanktionen generieren  
-✅ **Akten-Archiv** - Spieler-Akten mit Verstoßen und Beweisen speichern  
-✅ **Suspendierungs-Formular** - Automatische Suspendierung von Beamten  
+✅ **Sanktion Generator** - Schnell Sanktionen generieren  
 ✅ **Dark Theme** - Modernes dunkles Design  
-✅ **localStorage** - Daten im Browser speichern (keine DB nötig)  
-
-## Installation
-
-```bash
-npm install
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-## Tech Stack
-
-- React 18
-- Vite
-- Tailwind CSS
-- localStorage
+✅ **Discord Format** - Sanktionen im Discord-Format  
 
 ## Deployment
 
-Das Projekt kann auf GitHub Pages, Vercel, oder Netlify deployed werden.
+Die Seite ist deployed auf: https://daxterontop.github.io/sanktionsgenerator/
 
 ---
 
