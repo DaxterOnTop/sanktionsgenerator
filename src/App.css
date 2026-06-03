@@ -1,0 +1,32 @@
+/* App-specific styles */
+.main-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #1a1a1a;
+  border-right: 1px solid #2a2a2a;
+  overflow-y: auto;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #0f0f0f;
+}
+
+.tab-active {
+  background-color: #2563eb;
+  color: white;
+}
+
+.tab-inactive {
+  background-color: transparent;
+  color: #9ca3af;
+}
+
+.tab-inactive:hover {
+  color: #e5e7eb;
+}
