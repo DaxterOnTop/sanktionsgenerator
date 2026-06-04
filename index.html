@@ -25,7 +25,6 @@
             height: 100%;
             flex-direction: row;
         }
-        /* HEADER */
         .header {
             position: fixed;
             top: 0;
@@ -71,7 +70,6 @@
             color: #888;
             font-size: 11px;
         }
-        /* TABS & SANCTIONS ROW */
         .tabs-container {
             position: fixed;
             top: 50px;
@@ -114,19 +112,19 @@
             height: 50px;
             gap: 15px;
             font-size: 11px;
-            flex-wrap: wrap;
+            overflow-x: auto;
         }
         .sanction-group {
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
         .sanction-label {
             font-weight: 600;
             color: #999;
             text-transform: uppercase;
             font-size: 10px;
-            white-space: nowrap;
         }
         .sanction-dropdown {
             background-color: #1a1f2e;
@@ -137,7 +135,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             cursor: pointer;
-            min-width: 70px;
+            min-width: 80px;
         }
         .sanction-dropdown:focus {
             outline: none;
@@ -153,10 +151,8 @@
             color: #999;
             text-transform: uppercase;
             font-size: 10px;
-            white-space: nowrap;
             cursor: pointer;
         }
-        /* SIDEBAR */
         .sidebar {
             position: fixed;
             left: 0;
@@ -169,9 +165,14 @@
             overflow-y: auto;
             font-size: 12px;
             font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         .sidebar-section {
-            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         .sidebar-title {
             font-weight: 700;
@@ -179,12 +180,10 @@
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 12px;
         }
         .sidebar-label {
             font-size: 11px;
             color: #666;
-            margin-bottom: 6px;
             font-weight: 500;
         }
         .sidebar-input {
@@ -196,14 +195,20 @@
             border-radius: 3px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            margin-bottom: 10px;
         }
         .sidebar-input:focus {
             outline: none;
             border-color: #2563eb;
             background-color: #151a28;
         }
-        .sidebar-select {
+        .sanctions-search {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-height: 200px;
+        }
+        .search-input {
             width: 100%;
             background-color: #1a1f2e;
             border: 1px solid #2a3142;
@@ -211,13 +216,34 @@
             padding: 6px 8px;
             border-radius: 3px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            margin-bottom: 10px;
-            cursor: pointer;
+            font-size: 10px;
         }
-        .sidebar-select:focus {
+        .search-input:focus {
             outline: none;
             border-color: #2563eb;
+        }
+        .sanctions-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #2a3142;
+            border-radius: 3px;
+            background-color: #151a28;
+        }
+        .sanction-item {
+            padding: 6px 8px;
+            border-bottom: 1px solid #2a3142;
+            cursor: pointer;
+            font-size: 10px;
+            transition: background-color 0.2s;
+            color: #999;
+        }
+        .sanction-item:hover {
+            background-color: #1f2434;
+            color: #c5c7c9;
+        }
+        .sanction-item.selected {
+            background-color: #2563eb;
+            color: white;
         }
         .sidebar-button {
             width: 100%;
@@ -235,7 +261,6 @@
         .sidebar-button:hover {
             background-color: #1d4ed8;
         }
-        /* MAIN CONTENT */
         .main-content {
             margin-top: 145px;
             margin-left: 280px;
@@ -254,16 +279,11 @@
             display: flex;
             flex-direction: column;
         }
-        /* SANKTION SECTION */
         .sanktion-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
             flex: 1;
-        }
-        .input-area, .preview-area {
-            display: flex;
-            flex-direction: column;
         }
         .input-group {
             margin-bottom: 15px;
@@ -348,7 +368,6 @@
         .copy-button:hover {
             background-color: #15803d;
         }
-        /* SCROLLBAR */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -366,27 +385,25 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- HEADER -->
         <div class="header">
             <div class="header-left">
                 <div class="logo">🔵 IU</div>
                 <div class="header-title">SANKTIONSGENERATOR</div>
             </div>
-            <div class="header-info">Made by Daxter Kush | 110812 | Stand: 29.5.2026 | Keine Haftung für Falsche Ausgabe</div>
+            <div class="header-info">Made by Daxter Kush | 110812 | Stand: 04.06.2026 | Keine Haftung für Falsche Ausgabe</div>
             <div class="header-right">
                 <span>🔄 RESET</span>
                 <span>DESIGN</span>
             </div>
         </div>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-section">
                 <div class="sidebar-title">IDENTITÄT</div>
                 <div class="sidebar-label">BESCHULDIGTER MITARBEITER (NAME)</div>
                 <input type="text" id="name" class="sidebar-input" placeholder="Vorname Nachname">
                 
-                <div class="sidebar-label" style="margin-top: 12px;">REISEPASSNUMMER (BESCHULDIGER)</div>
+                <div class="sidebar-label" style="margin-top: 8px;">REISEPASSNUMMER (BESCHULDIGER)</div>
                 <input type="text" id="spielerId" class="sidebar-input" placeholder="z.B. 123456">
             </div>
 
@@ -397,7 +414,7 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-title">INTERNER RANG</div>
-                <select id="internerRang" class="sidebar-select">
+                <select id="internerRang" class="sidebar-input" style="cursor:pointer;">
                     <option>- Rang wählen -</option>
                     <option>01. Officer</option>
                     <option>02. Senior Officer</option>
@@ -409,15 +426,18 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-title">ROLLE (OPTIONAL)</div>
-                <input type="text" id="rolle" class="sidebar-input" placeholder="z.B. I.A. Member, Leadership">
+                <input type="text" id="rolle" class="sidebar-input" placeholder="z.B. I.A. Member, Leaderschafft">
             </div>
 
             <div class="sidebar-section">
-                <button class="sidebar-button" onclick="generateSanktion()">✓ WEITER -</button>
+                <div class="sidebar-title">VERSTOSSE AUSWHLEN</div>
+                <input type="text" id="searchSanctions" class="search-input" placeholder="Suchen...">
+                <div class="sanctions-list" id="sanctionsList"></div>
             </div>
+
+            <button class="sidebar-button" onclick="generateSanktion()">✓ WEITER -</button>
         </div>
 
-        <!-- TABS & SANCTIONS -->
         <div class="tabs-container">
             <div class="tabs-row">
                 <button class="tab-button active" onclick="switchTab('sanktion', event)">| VORSCHAU</button>
@@ -440,6 +460,7 @@
                         <option>50min</option>
                         <option>55min</option>
                         <option>60min</option>
+                        <option>90min</option>
                     </select>
                 </div>
 
@@ -471,6 +492,7 @@
                         <option>50min</option>
                         <option>55min</option>
                         <option>60min</option>
+                        <option>90min</option>
                     </select>
                 </div>
 
@@ -478,12 +500,16 @@
                     <label class="sanction-label">GELDSTRAFE</label>
                     <select id="geld" class="sanction-dropdown" onchange="generateSanktion()">
                         <option>-</option>
+                        <option>$10.000</option>
+                        <option>$20.000</option>
+                        <option>$30.000</option>
+                        <option>$40.000</option>
                         <option>$50.000</option>
+                        <option>$60.000</option>
+                        <option>$70.000</option>
+                        <option>$80.000</option>
+                        <option>$90.000</option>
                         <option>$100.000</option>
-                        <option>$150.000</option>
-                        <option>$200.000</option>
-                        <option>$250.000</option>
-                        <option>$300.000</option>
                     </select>
                 </div>
 
@@ -499,22 +525,18 @@
             </div>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-content">
-            <!-- SANKTION TAB -->
             <div id="sanktion" class="content-section active">
                 <div class="sanktion-grid">
-                    <!-- INPUT AREA -->
                     <div class="input-area">
                         <div class="input-group">
-                            <label>VERSTOSS</label>
+                            <label>VERSTOUSS</label>
                             <textarea id="beschuldigung" placeholder="z.B. §1.0 Respektloses Verhalten" onchange="generateSanktion()"></textarea>
                         </div>
 
                         <button class="generate-button" onclick="generateSanktion()">✓ SANKTION GENERIEREN</button>
                     </div>
 
-                    <!-- PREVIEW AREA -->
                     <div class="preview-area">
                         <div class="preview-label">📋 SANKTION</div>
                         <div class="preview-box" id="preview">Keine Verstöße ausgewählt - Bitte oben auswählen</div>
@@ -523,14 +545,60 @@
                 </div>
             </div>
 
-            <!-- AKTE TAB -->
             <div id="akte" class="content-section">
-                <p style="color: #666;">Akte - Coming Soon 🛠️</p>
+                <p style="color: #666;">Akte - Coming Soon 🔧</p>
             </div>
         </div>
     </div>
 
     <script>
+        const sanctions = [
+            { id: '1.0', name: 'Respektloses Verhalten', category: '1. Zwischenmenschlicher Umgang' },
+            { id: '1.1', name: 'Befehlsverweigerung', category: '1. Zwischenmenschlicher Umgang' },
+            { id: '1.2', name: 'Fragen nach Belohnung', category: '1. Zwischenmenschlicher Umgang' },
+            { id: '2.0', name: 'Missachtung der Dienstpflicht', category: '2. Dienstvergehen' },
+            { id: '2.1', name: 'Vorsätzliches Falschaussagen', category: '2. Dienstvergehen' },
+            { id: '2.2', name: 'Mitnahme von Zivilisten während des Dienstes', category: '2. Dienstvergehen' },
+            { id: '3.0', name: 'Versäumen wichtiger Funksprüche', category: '3. Funk-, Disziplin- und Leitstellenvergeheh' },
+            { id: '3.1', name: 'Mitarbeiterbeschwerden via T-Funk', category: '3. Funk-, Disziplin- und Leitstellenvergeheh' },
+            { id: '4.0', name: 'Verstoß gegen die Kleiderordnung', category: '4. Vergehren im Bezug auf Ausrüstung' },
+            { id: '5.0', name: 'Nicht Anfahren von Event/Globals', category: '5. Einsatzvergehen' },
+            { id: '6.0', name: 'Diffamieren des LSPD im Dienst', category: '6. Schwerwegende Vergehren' },
+            { id: '6.1', name: 'Nicht erfüllen von Strafen', category: '6. Schwerwegende Vergehren' },
+            { id: '7.0', name: 'Sonstiges Vergehren (Variabel)', category: '7. Sonstige Vergehren' },
+            { id: '7.1', name: 'Mehrfache Sanktionen in kurzer Zeit', category: '7. Sonstige Vergehren' },
+        ];
+
+        let selectedSanction = null;
+
+        function initSanctionsList() {
+            const list = document.getElementById('sanctionsList');
+            sanctions.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'sanction-item';
+                div.textContent = `${s.id} - ${s.name}`;
+                div.onclick = () => selectSanction(s);
+                list.appendChild(div);
+            });
+        }
+
+        function selectSanction(sanction) {
+            selectedSanction = sanction;
+            document.querySelectorAll('.sanction-item').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('beschuldigung').value = `§${sanction.id} ${sanction.name}`;
+            generateSanktion();
+        }
+
+        document.getElementById('searchSanctions').addEventListener('input', (e) => {
+            const search = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.sanction-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(search) ? 'block' : 'none';
+            });
+        });
+
         function switchTab(tabName, event) {
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
@@ -559,7 +627,7 @@
             if (kuen) strafenList.push(`- Kündigung`);
 
             if (!name || !beschuldigung || strafenList.length === 0) {
-                document.getElementById('preview').textContent = 'Bitte Name, Verstoff und mindestens eine Sanktion auswählen';
+                document.getElementById('preview').textContent = 'Bitte Name, Verstoß und mindestens eine Sanktion auswählen';
                 return;
             }
 
@@ -567,7 +635,7 @@
 
 Ihnen wurde eine Sanktion in Folge vorliegender Beweise ausgestellt.
 
-Verstoff:
+Verstoß:
 > - ${beschuldigung}
 
 Strafe:
@@ -590,6 +658,8 @@ Mit freundlichen Grüßen,
                 alert('✓ In Zwischenablage kopiert!');
             });
         }
+
+        initSanctionsList();
     </script>
 </body>
 </html>
