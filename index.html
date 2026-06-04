@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanktionsgenerator</title>
+    <title>Sanktionsgenerator - LSPD IU</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -11,655 +11,634 @@
             padding: 0;
             box-sizing: border-box;
         }
-        html, body {
-            width: 100%;
-            height: 100%;
-            background-color: #0a0e27;
-            color: #c5c7c9;
-            font-family: 'Inter', -apple-system, sans-serif;
+
+        body {
+            background: #0a0e27;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
             overflow: hidden;
         }
-        .app-container {
+
+        /* Header */
+        header {
+            background: #0f1419;
+            border-bottom: 1px solid #2a3142;
+            padding: 12px 20px;
             display: flex;
-            width: 100%;
-            height: 100%;
-            flex-direction: row;
-        }
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background-color: #0f1419;
-            border-bottom: 1px solid #1a1f2e;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            font-size: 12px;
-            z-index: 100;
             justify-content: space-between;
-        }
-        .header-left {
-            display: flex;
             align-items: center;
-            gap: 15px;
         }
-        .logo {
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .header-title h1 { font-size: 18px; font-weight: 700; }
+        .header-title p { font-size: 12px; color: #888; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .status-badge { background: #1a5c3a; padding: 4px 10px; border-radius: 4px; font-size: 11px; }
+
+        /* Main container */
+        .container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: #0f1419;
+            border-right: 1px solid #2a3142;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            background: #151a28;
+            border: 1px solid #2a3142;
+            color: #e0e0e0;
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        input::placeholder { color: #666; }
+
+        .violations-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .violations-list {
+            border: 1px solid #2a3142;
+            background: #0a0e27;
+            border-radius: 4px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .violation-item {
+            padding: 8px;
+            border-radius: 3px;
+            margin-bottom: 4px;
+            background: #151a28;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .violation-item:hover { background: #1a2038; }
+
+        .violation-item label {
+            display: block;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .violation-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 6px;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .violation-code {
+            font-weight: 600;
+            color: #4a9eff;
+        }
+
+        .violation-penalties {
+            font-size: 10px;
+            color: #888;
+            margin-top: 3px;
+            margin-left: 20px;
+            line-height: 1.3;
+        }
+
+        .generate-btn {
             background: #2563eb;
             color: white;
-            padding: 4px 8px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .header-title {
-            font-weight: 600;
-            letter-spacing: 2px;
-            font-size: 13px;
-        }
-        .header-info {
-            color: #888;
-            font-size: 11px;
-        }
-        .header-right {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            color: #888;
-            font-size: 11px;
-        }
-        .tabs-container {
-            position: fixed;
-            top: 50px;
-            left: 280px;
-            right: 0;
-            background-color: #0a0e27;
-            border-bottom: 1px solid #1a1f2e;
-            z-index: 99;
-        }
-        .tabs-row {
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            height: 45px;
-            gap: 20px;
-            border-bottom: 1px solid #1a1f2e;
-        }
-        .tab-button {
-            background: none;
             border: none;
-            color: #666;
-            padding: 8px 12px;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
+            width: 100%;
+            margin-top: auto;
+            transition: background 0.2s;
+        }
+
+        .generate-btn:hover { background: #1d4ed8; }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs {
+            background: #0f1419;
+            border-bottom: 1px solid #2a3142;
+            display: flex;
+            padding: 0 20px;
+            gap: 20px;
+        }
+
+        .tab {
+            padding: 12px 0;
+            font-size: 13px;
             font-weight: 500;
             border-bottom: 2px solid transparent;
+            cursor: pointer;
+            color: #888;
             transition: all 0.2s;
         }
-        .tab-button:hover {
-            color: #aaa;
+
+        .tab.active {
+            color: #4a9eff;
+            border-bottom-color: #4a9eff;
         }
-        .tab-button.active {
-            color: #2563eb;
-            border-bottom-color: #2563eb;
-        }
-        .sanctions-row {
+
+        /* Sanctions bar */
+        .sanctions-bar {
+            background: #0f1419;
+            border-bottom: 1px solid #2a3142;
+            padding: 10px 20px;
             display: flex;
-            align-items: center;
-            padding: 0 20px;
-            height: 50px;
             gap: 15px;
-            font-size: 11px;
-            overflow-x: auto;
+            flex-wrap: wrap;
+            align-items: center;
+            font-size: 12px;
         }
-        .sanction-group {
+
+        .sanction-input {
             display: flex;
             align-items: center;
-            gap: 8px;
-            white-space: nowrap;
+            gap: 6px;
         }
-        .sanction-label {
-            font-weight: 600;
-            color: #999;
-            text-transform: uppercase;
-            font-size: 10px;
-        }
-        .sanction-dropdown {
-            background-color: #1a1f2e;
-            border: 1px solid #2a3142;
-            color: #c5c7c9;
-            padding: 5px 8px;
-            border-radius: 3px;
-            font-family: 'JetBrains Mono', monospace;
+
+        .sanction-input label {
             font-size: 11px;
-            cursor: pointer;
+            white-space: nowrap;
             min-width: 80px;
         }
-        .sanction-dropdown:focus {
-            outline: none;
-            border-color: #2563eb;
+
+        .sanction-input input, .sanction-input select {
+            width: 80px;
+            padding: 5px 8px;
+            font-size: 11px;
         }
-        .sanction-checkbox {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        .sanction-checkbox-label {
-            font-weight: 600;
-            color: #999;
-            text-transform: uppercase;
-            font-size: 10px;
-            cursor: pointer;
-        }
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 50px;
-            width: 280px;
-            height: calc(100vh - 50px);
-            background-color: #0f1419;
-            border-right: 1px solid #1a1f2e;
+
+        /* Content area */
+        .content-area {
+            flex: 1;
             padding: 20px;
             overflow-y: auto;
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .sidebar-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .sidebar-title {
-            font-weight: 700;
-            color: #999;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .sidebar-label {
-            font-size: 11px;
-            color: #666;
-            font-weight: 500;
-        }
-        .sidebar-input {
-            width: 100%;
-            background-color: #1a1f2e;
-            border: 1px solid #2a3142;
-            color: #c5c7c9;
-            padding: 6px 8px;
-            border-radius: 3px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-        }
-        .sidebar-input:focus {
-            outline: none;
-            border-color: #2563eb;
-            background-color: #151a28;
-        }
-        .sanctions-search {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex: 1;
-            min-height: 200px;
-        }
-        .search-input {
-            width: 100%;
-            background-color: #1a1f2e;
-            border: 1px solid #2a3142;
-            color: #c5c7c9;
-            padding: 6px 8px;
-            border-radius: 3px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-        }
-        .search-input:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-        .sanctions-list {
-            flex: 1;
-            overflow-y: auto;
-            border: 1px solid #2a3142;
-            border-radius: 3px;
-            background-color: #151a28;
-        }
-        .sanction-item {
-            padding: 6px 8px;
-            border-bottom: 1px solid #2a3142;
-            cursor: pointer;
-            font-size: 10px;
-            transition: background-color 0.2s;
-            color: #999;
-        }
-        .sanction-item:hover {
-            background-color: #1f2434;
-            color: #c5c7c9;
-        }
-        .sanction-item.selected {
-            background-color: #2563eb;
-            color: white;
-        }
-        .sidebar-button {
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-        .sidebar-button:hover {
-            background-color: #1d4ed8;
-        }
-        .main-content {
-            margin-top: 145px;
-            margin-left: 280px;
-            width: calc(100% - 280px);
-            height: calc(100vh - 145px);
-            display: flex;
-            flex-direction: column;
-        }
-        .content-section {
-            display: none;
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .content-section.active {
-            display: flex;
-            flex-direction: column;
-        }
-        .sanktion-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            flex: 1;
         }
-        .input-group {
-            margin-bottom: 15px;
+
+        .content-area.tab-akte,
+        .content-area.tab-suspension {
+            grid-template-columns: 1fr;
         }
-        .input-group label {
-            display: block;
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 5px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        .input-group textarea {
-            width: 100%;
-            background-color: #1a1f2e;
+
+        .input-box, .preview-box {
+            background: #151a28;
             border: 1px solid #2a3142;
-            color: #c5c7c9;
-            padding: 8px 10px;
-            border-radius: 3px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            height: 120px;
-            resize: none;
+            border-radius: 6px;
+            padding: 16px;
         }
-        .input-group textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-        .generate-button {
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .generate-button:hover {
-            background-color: #1d4ed8;
-        }
-        .preview-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #666;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+
         .preview-box {
-            flex: 1;
-            background-color: #151a28;
-            border: 1px solid #2a3142;
-            border-radius: 3px;
-            padding: 12px;
-            overflow-y: auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: #c5c7c9;
-            white-space: pre-wrap;
-            word-break: break-word;
-            line-height: 1.5;
+            background: #0a0e27;
+            border: 2px dashed #2a3142;
         }
-        .copy-button {
+
+        textarea {
             width: 100%;
-            background-color: #16a34a;
+            height: 250px;
+            background: #0f1419;
+            border: 1px solid #2a3142;
+            color: #e0e0e0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            resize: none;
+            font-weight: 400;
+        }
+
+        .preview-content {
+            background: #0f1419;
+            border: 1px solid #2a3142;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            background: #10b981;
             color: white;
             border: none;
-            padding: 8px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            font-size: 12px;
             margin-top: 10px;
-            display: none;
+            transition: background 0.2s;
         }
-        .copy-button.show {
-            display: block;
-        }
-        .copy-button:hover {
-            background-color: #15803d;
-        }
+
+        .copy-btn:hover { background: #059669; }
+
+        /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a0e27;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
             background: #2a3142;
-            border-radius: 3px;
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #3a4152;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+        }
+
+        /* Date display */
+        .date-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="header">
-            <div class="header-left">
-                <div class="logo">🔵 IU</div>
-                <div class="header-title">SANKTIONSGENERATOR</div>
-            </div>
-            <div class="header-info">Made by Daxter Kush | 110812 | Stand: 04.06.2026 | Keine Haftung für Falsche Ausgabe</div>
-            <div class="header-right">
-                <span>🔄 RESET</span>
-                <span>DESIGN</span>
+    <header>
+        <div class="header-left">
+            <div class="header-title">
+                <h1>🛡️ Sanktionsgenerator</h1>
+                <p>Los Santos Police Department</p>
             </div>
         </div>
+        <div class="header-right">
+            <span class="status-badge">✓ Online</span>
+        </div>
+        <div class="date-display">Stand: 04.06.2026</div>
+    </header>
 
+    <div class="container">
+        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">IDENTITÄT</div>
-                <div class="sidebar-label">BESCHULDIGTER MITARBEITER (NAME)</div>
-                <input type="text" id="name" class="sidebar-input" placeholder="Vorname Nachname">
-                
-                <div class="sidebar-label" style="margin-top: 8px;">REISEPASSNUMMER (BESCHULDIGER)</div>
-                <input type="text" id="spielerId" class="sidebar-input" placeholder="z.B. 123456">
-            </div>
-
-            <div class="sidebar-section">
-                <div class="sidebar-title">DEIN RANG</div>
-                <input type="text" id="deinRang" class="sidebar-input" placeholder="Dein Rang">
-            </div>
-
-            <div class="sidebar-section">
-                <div class="sidebar-title">INTERNER RANG</div>
-                <select id="internerRang" class="sidebar-input" style="cursor:pointer;">
-                    <option>- Rang wählen -</option>
-                    <option>01. Officer</option>
-                    <option>02. Senior Officer</option>
-                    <option>03. Inspector</option>
-                    <option>04. Senior Inspector</option>
-                    <option>05. Lieutenant</option>
+                <div class="sidebar-label">👤 Beamte Informationen</div>
+                <input type="text" id="officerName" placeholder="Daxter Kush" value="Daxter Kush">
+                <input type="number" id="officerId" placeholder="110812" value="110812">
+                <select id="officerRank">
+                    <option value="02. Police Officer">02. Police Officer</option>
+                    <option value="03. Senior Police Officer">03. Senior Police Officer</option>
+                    <option value="04. Detective">04. Detective</option>
                 </select>
+                <input type="text" id="officerRole" placeholder="I.A. Member, Leaderschafft">
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-title">ROLLE (OPTIONAL)</div>
-                <input type="text" id="rolle" class="sidebar-input" placeholder="z.B. I.A. Member, Leaderschafft">
+                <div class="violations-header">
+                    <div class="sidebar-label">⚖️ Verstöße</div>
+                </div>
+                <input type="text" id="violationSearch" class="search-box" placeholder="Suche...">
+                <div class="violations-list" id="violationsList"></div>
             </div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-title">VERSTOSSE AUSWHLEN</div>
-                <input type="text" id="searchSanctions" class="search-input" placeholder="Suchen...">
-                <div class="sanctions-list" id="sanctionsList"></div>
-            </div>
-
-            <button class="sidebar-button" onclick="generateSanktion()">✓ WEITER -</button>
+            <button class="generate-btn" onclick="generateSanction()">SANKTION GENERIEREN 📋</button>
         </div>
 
-        <div class="tabs-container">
-            <div class="tabs-row">
-                <button class="tab-button active" onclick="switchTab('sanktion', event)">| VORSCHAU</button>
-                <button class="tab-button" onclick="switchTab('akte', event)">📁 AKTE</button>
-            </div>
-            <div class="sanctions-row">
-                <div class="sanction-group">
-                    <label class="sanction-label">HUMANE LABS</label>
-                    <select id="hl" class="sanction-dropdown" onchange="generateSanktion()">
-                        <option>-</option>
-                        <option>5min</option>
-                        <option>10min</option>
-                        <option>15min</option>
-                        <option>20min</option>
-                        <option>25min</option>
-                        <option>30min</option>
-                        <option>35min</option>
-                        <option>40min</option>
-                        <option>45min</option>
-                        <option>50min</option>
-                        <option>55min</option>
-                        <option>60min</option>
-                        <option>90min</option>
-                    </select>
-                </div>
-
-                <div class="sanction-group">
-                    <label class="sanction-label">NG-RUNDEN</label>
-                    <select id="ng" class="sanction-dropdown" onchange="generateSanktion()">
-                        <option>-</option>
-                        <option>1x</option>
-                        <option>2x</option>
-                        <option>3x</option>
-                        <option>4x</option>
-                        <option>5x</option>
-                    </select>
-                </div>
-
-                <div class="sanction-group">
-                    <label class="sanction-label">LOBBYARBEIT</label>
-                    <select id="lobby" class="sanction-dropdown" onchange="generateSanktion()">
-                        <option>-</option>
-                        <option>5min</option>
-                        <option>10min</option>
-                        <option>15min</option>
-                        <option>20min</option>
-                        <option>25min</option>
-                        <option>30min</option>
-                        <option>35min</option>
-                        <option>40min</option>
-                        <option>45min</option>
-                        <option>50min</option>
-                        <option>55min</option>
-                        <option>60min</option>
-                        <option>90min</option>
-                    </select>
-                </div>
-
-                <div class="sanction-group">
-                    <label class="sanction-label">GELDSTRAFE</label>
-                    <select id="geld" class="sanction-dropdown" onchange="generateSanktion()">
-                        <option>-</option>
-                        <option>$10.000</option>
-                        <option>$20.000</option>
-                        <option>$30.000</option>
-                        <option>$40.000</option>
-                        <option>$50.000</option>
-                        <option>$60.000</option>
-                        <option>$70.000</option>
-                        <option>$80.000</option>
-                        <option>$90.000</option>
-                        <option>$100.000</option>
-                    </select>
-                </div>
-
-                <div class="sanction-group">
-                    <input type="checkbox" id="strike" class="sanction-checkbox" onchange="generateSanktion()">
-                    <label for="strike" class="sanction-checkbox-label">STRIKE VERHÄNGEN</label>
-                </div>
-
-                <div class="sanction-group">
-                    <input type="checkbox" id="kuen" class="sanction-checkbox" onchange="generateSanktion()">
-                    <label for="kuen" class="sanction-checkbox-label">KÜNDIGUNG</label>
-                </div>
-            </div>
-        </div>
-
+        <!-- MAIN CONTENT -->
         <div class="main-content">
-            <div id="sanktion" class="content-section active">
-                <div class="sanktion-grid">
-                    <div class="input-area">
-                        <div class="input-group">
-                            <label>VERSTOUSS</label>
-                            <textarea id="beschuldigung" placeholder="z.B. §1.0 Respektloses Verhalten" onchange="generateSanktion()"></textarea>
-                        </div>
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('vorschau')">Vorschau</div>
+                <div class="tab" onclick="switchTab('akte')">Akte</div>
+                <div class="tab" onclick="switchTab('suspension')">Suspendierung</div>
+            </div>
 
-                        <button class="generate-button" onclick="generateSanktion()">✓ SANKTION GENERIEREN</button>
-                    </div>
-
-                    <div class="preview-area">
-                        <div class="preview-label">📋 SANKTION</div>
-                        <div class="preview-box" id="preview">Keine Verstöße ausgewählt - Bitte oben auswählen</div>
-                        <button class="copy-button" id="copyBtn" onclick="copySanktion()">📋 KOPIEREN</button>
-                    </div>
+            <!-- SANCTION ADJUSTMENTS BAR -->
+            <div class="sanctions-bar" id="sanctionsBar" style="display: none;">
+                <div class="sanction-input">
+                    <label>⏱️ Humane Labs</label>
+                    <input type="number" id="hlTime" min="0" max="60" value="0" step="5"> min
+                </div>
+                <div class="sanction-input">
+                    <label>🚑 EMS-Dienst</label>
+                    <input type="number" id="emsTime" min="0" max="90" value="0" step="5"> min
+                </div>
+                <div class="sanction-input">
+                    <label>🔄 NG-Runden</label>
+                    <input type="number" id="ngRounds" min="0" max="5" value="0" step="1">
+                </div>
+                <div class="sanction-input">
+                    <label>💸 Geldstrafe</label>
+                    <select id="fineAmount">
+                        <option value="0">Keine</option>
+                        <option value="10000">$10.000</option>
+                        <option value="20000">$20.000</option>
+                        <option value="30000">$30.000</option>
+                        <option value="40000">$40.000</option>
+                        <option value="50000">$50.000</option>
+                        <option value="60000">$60.000</option>
+                        <option value="70000">$70.000</option>
+                        <option value="80000">$80.000</option>
+                        <option value="90000">$90.000</option>
+                        <option value="100000">$100.000</option>
+                    </select>
+                </div>
+                <div class="sanction-input">
+                    <label>⚠️ Strike</label>
+                    <input type="checkbox" id="strikeCheck">
+                </div>
+                <div class="sanction-input">
+                    <label>🔴 Kündigung</label>
+                    <input type="checkbox" id="terminationCheck">
                 </div>
             </div>
 
-            <div id="akte" class="content-section">
-                <p style="color: #666;">Akte - Coming Soon 🔧</p>
+            <!-- CONTENT AREA -->
+            <div class="content-area" id="contentArea">
+                <div class="input-box">
+                    <div class="sidebar-label">Grund der Sanktion (optional)</div>
+                    <textarea id="violationReason" placeholder="Zusätzliche Anmerkungen zur Sanktion..."></textarea>
+                </div>
+                <div class="preview-box">
+                    <div class="sidebar-label">📋 Sanktion (Vorschau)</div>
+                    <div class="preview-content" id="preview"></div>
+                    <button class="copy-btn" onclick="copySanction()">📋 In Zwischenablage kopieren</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // COMPLETE LSPD SANCTIONS CATALOG
         const sanctions = [
-            { id: '1.0', name: 'Respektloses Verhalten', category: '1. Zwischenmenschlicher Umgang' },
-            { id: '1.1', name: 'Befehlsverweigerung', category: '1. Zwischenmenschlicher Umgang' },
-            { id: '1.2', name: 'Fragen nach Belohnung', category: '1. Zwischenmenschlicher Umgang' },
-            { id: '2.0', name: 'Missachtung der Dienstpflicht', category: '2. Dienstvergehen' },
-            { id: '2.1', name: 'Vorsätzliches Falschaussagen', category: '2. Dienstvergehen' },
-            { id: '2.2', name: 'Mitnahme von Zivilisten während des Dienstes', category: '2. Dienstvergehen' },
-            { id: '3.0', name: 'Versäumen wichtiger Funksprüche', category: '3. Funk-, Disziplin- und Leitstellenvergeheh' },
-            { id: '3.1', name: 'Mitarbeiterbeschwerden via T-Funk', category: '3. Funk-, Disziplin- und Leitstellenvergeheh' },
-            { id: '4.0', name: 'Verstoß gegen die Kleiderordnung', category: '4. Vergehren im Bezug auf Ausrüstung' },
-            { id: '5.0', name: 'Nicht Anfahren von Event/Globals', category: '5. Einsatzvergehen' },
-            { id: '6.0', name: 'Diffamieren des LSPD im Dienst', category: '6. Schwerwegende Vergehren' },
-            { id: '6.1', name: 'Nicht erfüllen von Strafen', category: '6. Schwerwegende Vergehren' },
-            { id: '7.0', name: 'Sonstiges Vergehren (Variabel)', category: '7. Sonstige Vergehren' },
-            { id: '7.1', name: 'Mehrfache Sanktionen in kurzer Zeit', category: '7. Sonstige Vergehren' },
+            // 1. Zwischenmenschlicher Umgang
+            { code: '1.0', title: 'Respektloses Verhalten', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '1.1', title: 'Befehlsverweigerung (ggü. ranghöheren, Einsatzteilung oder Leitstelle)', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '1.2', title: 'Fragen nach Belohnung', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. 7-14 Tage Upranksperre, max. $50.000' },
+            { code: '1.3', title: 'Namensänderung ohne Beantragung und Bestatigung (Meldung an HR oder Leaderschafft nötig)', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '1.4', title: 'Nicht Erscheinen zu Gesprächen / Ausbildungsterminen / Meetings ohne Anmeldung', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 3x NG, max. 7 Tage Upranksperre' },
+            { code: '1.5', title: 'Stören / Mithören von Privatgesprächen ohne Erlaubnis', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 30min HL, max. 30min EMS, max. 5x NG, max. $50.000, (✓) Strike optional' },
+            { code: '1.6', title: 'Diffamieren anderer staatlicher Organisationen', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 3x NG, max. $100.000, ✓ Strike' },
+            { code: '1.7', title: 'Unerlaubtes Tackeln / am Boden fesseln', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $100.000, ✓ Strike, (✓) Kündigung optional' },
+
+            // 2. Dienstvergehen
+            { code: '2.0', title: 'Missachtung der Dienstpflicht (18:00 – 22:00 Uhr, Wochends 18:00 – 23:00 Uhr)', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $50.000' },
+            { code: '2.1', title: 'Vorsätzliches Falschaussagen von Bußgeldern oder Fahndungstufen', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. 7 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '2.2', title: 'Mitnahme von Zivilisten während des Dienstes (Nur im Notfall gestattet)', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $50.000' },
+            { code: '2.3', title: 'Das Tragen von komplett schwarz tatowierten Armen / Füßen', category: 'Dienstvergehen', penalties: 'max. 30min HL, (kein EMS), max. 5x NG, max. $50.000' },
+            { code: '2.4', title: 'Das befahren des Ghettos im Dienst ohne Berechtigung / Spezialbeamte', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '2.5', title: 'Missbrauch des Tazers / sinntloses Tazern', category: 'Dienstvergehen', penalties: 'max. 45min HL, max. 45min EMS, max. 5x NG, max. $100.000, ✓ Strike' },
+            { code: '2.6', title: 'Schlafen am/im HQ (Ausnahme: Pausenraum)', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $30.000' },
+            { code: '2.7', title: 'Festnahme von Personen ohne Begründung / Verdacht / Missbrauch der Handschellen', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '2.8', title: 'Markierte Mitarbeiter vor fremden / externen Personen mit dem Namen ansprechen', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $30.000' },
+            { code: '2.9', title: 'Ergreifen ohne Genehmigung', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 45min EMS, max. 5x NG, max. $50.000' },
+            { code: '2.10', title: 'Unverhältnismäßige Waffengewalt gegenüber Wehrlosen', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. 7 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '2.11', title: 'Parken von Privatfahrzeugen auf dem Gelände des LSPDs (Ausnahme: Vorgeshende Parkplätze)', category: 'Dienstvergehen', penalties: 'max. 15 min HL, (kein EMS), max. 1x NG, max. $30.000' },
+            { code: '2.12', title: 'Nicht schießen der Türen', category: 'Dienstvergehen', penalties: '(kein HL), (kein EMS), max. 1x NG, max. $30.000' },
+            { code: '2.13', title: 'Nicht erscheinen zu Pflichtevents ohne Anmeldung', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 3x NG, max. $50.000' },
+            { code: '2.14', title: 'Grindlose Vergabe von Einzelhaft', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $50.000' },
+            { code: '2.15', title: 'Nicht dokumentieren von UC-Einheinten (Ausnahme: Leaderschafft)', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $100.000' },
+
+            // 3. Funk-, Disziplin- und Leitstellenvergehren
+            { code: '3.0', title: 'Versäumen wichtiger Funksprüche (1 Person pro Streife muss den Funk angeschaltet haben)', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 60min EMS, max. 2x NG, max. $50.000' },
+            { code: '3.1', title: 'Mitarbeiterbeschwerden via T-Funk', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '3.2', title: 'Nicht nutzen der Leitstelle / Eintragung sowie Ausstragung vergessen', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '3.3', title: 'Nutzung des Sprachfunks außerhalb des Dienstes', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, (kein EMS), max. 2x NG, max. $50.000' },
+            { code: '3.4', title: '(Wiederholter) Verstoß gegen die Befehlskette', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 60min HL, max. 45min EMS, max. 2x NG, max. $100.000' },
+            { code: '3.5', title: 'Brüllen, Schreien, unangemessene Lautstärke im Funk', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $50.000' },
+            { code: '3.6', title: 'Nichteinhaltung der Funkdisziplin', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $50.000' },
+            { code: '3.7', title: 'Unterbrechen wichtiger Funksprüche (Ausnahme: ein 11-99 oder 10-60 wird durchgegeben)', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+
+            // 4. Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge
+            { code: '4.0', title: 'Verstoß gegen die Kleiderordnung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.1', title: 'Verstoß gegen die Waffenordnung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.2', title: 'Verstoß gegen die Fahrzeugordnung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.3', title: 'Das Nutzen von Einsatzmitteln ohne gültige Ausbildung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.4', title: 'Stehen in einem Fahrzeug / nicht betanken oder reparieren von Fahrzeugen nach dem Dienst', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 15 min HL, max. 30min EMS, max. 1x NG, max. $30.000' },
+            { code: '4.5', title: 'Das Nutzen des Fahrzeugs zum privaten Gebrauch, ohne Berechtigung / Missbrauch der Handbremsen', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '4.6', title: 'Nicht entfernen von Absicherungen (Barrikaden, Absperrbänder) / Missbrauch von Absicherungen', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.7', title: 'Im Dienst ohne gültigen Waffenschein / Lizenzen', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 45min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '4.8', title: 'Entsorging von Waffen, Munition, Westen und Masken der Organisation außerhalb des Lagers', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000' },
+            { code: '4.9', title: 'Tragen von Abteilungsoutfits / Kleiderteileen ohne in der Abteilung zu sein', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.10', title: 'Tragen von Balalcavas im Dienst ohne Notwendigkeit die Identität zu schützen (Ausnahme: Spezialeinheit)', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+
+            // 5. Einsatzvergehen
+            { code: '5.0', title: 'Nicht Anfahren von Event, Globals, Locals, Shoproaubs und 11-99 ohne wichtigen Grund und Anmeldung im Chat Funk', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $100.000' },
+            { code: '5.1', title: 'Betreten von Grundstücken ohne Durchsuchungsbefehl ist verboten, ausgenommen es ist Gefahr im Vollzug / Strafbestand', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '5.2', title: 'Anstiftung zu einem internen Regelverstoß', category: 'Einsatzvergehen', penalties: 'max. 60min HL, max. 50min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '5.3', title: 'Volkaufbau / Einsatz entfernen einer Stoppauforderung oder Motorblockers auf Kollegen', category: 'Einsatzvergehen', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000' },
+            { code: '5.4', title: 'Vom Konvoi / Einsatz entfernen ohne Genehmigung', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000, (✓) Strike optional' },
+            { code: '5.5', title: 'Tanzen / unangemessene Verhalten / reden bei Einsätzen / Aufstellungen / Events', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 60min EMS, max. 2x NG, max. $50.000' },
+            { code: '5.6', title: 'Störeinsätze / wichtiger Einsatz - Kontrollen, Verhaftungen', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $100.000' },
+
+            // 6. Schwerwegende Vergehren
+            { code: '6.0', title: 'Diffamieren des LSPDs im Dienst sowie außer Dienst', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '6.1', title: 'Nicht erfüllen von Strafen innerhalb von 48 Stunden (Zählen von Bußgeldern, Humane Labs Dienst, NG Runden)', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
+            { code: '6.2', title: 'Entfernen von Wanteds ohne die Befugnis', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '6.3', title: 'Betreten / Gaffen / Aufenthalt bei Einsatzstellen außerhalb des Dienstes', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '6.4', title: 'Datenschutzverletzung', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '6.5', title: 'Bewerbung bei einer anderen Organisation ohne vorheriger Absprache mit der HR - Leitung / Leaderschafft', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike' },
+            { code: '6.6', title: 'Unagebrachtes Fehlen als 72 Stunden (+weitere Kulanz möglich) "Strike oder Kündigung"', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
+            { code: '6.7', title: 'Fehlende Bodycam bei Anfrage der Justiz, oder interner zugelassenen Personen/Abteilungen', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, (✓) Kündigung optional' },
+            { code: '6.8', title: 'Mangelnde Aktivät/Initiative, Mangelnde Logaktivitat', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
+
+            // 7. Sonstige Vergehren
+            { code: '7.0', title: 'Sonstiges Vergehren (Variabel)', category: 'Sonstige Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '7.1', title: 'Mehrfache Sanktionen in der letzter Zeit, mit dem selben Sanktionsgrund', category: 'Sonstige Vergehren', penalties: 'Strike oder Kündigung' }
         ];
 
-        let selectedSanction = null;
+        let selectedViolations = [];
 
-        function initSanctionsList() {
-            const list = document.getElementById('sanctionsList');
-            sanctions.forEach(s => {
-                const div = document.createElement('div');
-                div.className = 'sanction-item';
-                div.textContent = `${s.id} - ${s.name}`;
-                div.onclick = () => selectSanction(s);
-                list.appendChild(div);
+        // Initialize violations list
+        function initializeViolations() {
+            const list = document.getElementById('violationsList');
+            list.innerHTML = '';
+            sanctions.forEach(sanction => {
+                const item = document.createElement('div');
+                item.className = 'violation-item';
+                item.innerHTML = `
+                    <label>
+                        <input type="checkbox" class="violation-checkbox" data-code="${sanction.code}" 
+                               onchange="updateSelectedViolations()">
+                        <span class="violation-code">§${sanction.code}</span> ${sanction.title}
+                    </label>
+                    <div class="violation-penalties">${sanction.penalties}</div>
+                `;
+                list.appendChild(item);
             });
         }
 
-        function selectSanction(sanction) {
-            selectedSanction = sanction;
-            document.querySelectorAll('.sanction-item').forEach(el => el.classList.remove('selected'));
-            event.target.classList.add('selected');
-            document.getElementById('beschuldigung').value = `§${sanction.id} ${sanction.name}`;
-            generateSanktion();
-        }
-
-        document.getElementById('searchSanctions').addEventListener('input', (e) => {
+        // Search violations
+        document.getElementById('violationSearch').addEventListener('input', (e) => {
             const search = e.target.value.toLowerCase();
-            const items = document.querySelectorAll('.sanction-item');
-            items.forEach(item => {
+            document.querySelectorAll('.violation-item').forEach(item => {
                 const text = item.textContent.toLowerCase();
                 item.style.display = text.includes(search) ? 'block' : 'none';
             });
         });
 
-        function switchTab(tabName, event) {
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+        // Update selected violations
+        function updateSelectedViolations() {
+            selectedViolations = [];
+            document.querySelectorAll('.violation-checkbox:checked').forEach(checkbox => {
+                const code = checkbox.dataset.code;
+                selectedViolations.push(sanctions.find(s => s.code === code));
+            });
+            document.getElementById('sanctionsBar').style.display = selectedViolations.length > 0 ? 'flex' : 'none';
+            updatePreview();
         }
 
-        function generateSanktion() {
-            const name = document.getElementById('name').value;
-            const beschuldigung = document.getElementById('beschuldigung').value;
-            const deinRang = document.getElementById('deinRang').value;
-            
-            const hl = document.getElementById('hl').value;
-            const ng = document.getElementById('ng').value;
-            const lobby = document.getElementById('lobby').value;
-            const geld = document.getElementById('geld').value;
-            const strike = document.getElementById('strike').checked;
-            const kuen = document.getElementById('kuen').checked;
-
-            let strafenList = [];
-            if (hl !== '-') strafenList.push(`- ${hl} Humane Labs`);
-            if (ng !== '-') strafenList.push(`- ${ng} NG-Runden`);
-            if (lobby !== '-') strafenList.push(`- ${lobby} Lobbyarbeit`);
-            if (geld !== '-') strafenList.push(`- ${geld},-`);
-            if (strike) strafenList.push(`- 1x Strike`);
-            if (kuen) strafenList.push(`- Kündigung`);
-
-            if (!name || !beschuldigung || strafenList.length === 0) {
-                document.getElementById('preview').textContent = 'Bitte Name, Verstoß und mindestens eine Sanktion auswählen';
+        // Generate sanction
+        function generateSanction() {
+            if (selectedViolations.length === 0) {
+                alert('Bitte mindestens einen Verstoß auswählen!');
                 return;
             }
 
-            const text = `Sehr geehrter @${name},
+            const name = document.getElementById('officerName').value;
+            const id = document.getElementById('officerId').value;
+            const role = document.getElementById('officerRole').value;
+            const reason = document.getElementById('violationReason').value;
+
+            const hlTime = parseInt(document.getElementById('hlTime').value) || 0;
+            const emsTime = parseInt(document.getElementById('emsTime').value) || 0;
+            const ngRounds = parseInt(document.getElementById('ngRounds').value) || 0;
+            const fineAmount = parseInt(document.getElementById('fineAmount').value) || 0;
+            const hasStrike = document.getElementById('strikeCheck').checked;
+            const hasTermination = document.getElementById('terminationCheck').checked;
+
+            let violations = selectedViolations.map(v => `> - §${v.code} ${v.title}`).join('\n');
+
+            let punishments = [];
+            if (hlTime > 0) punishments.push(`${hlTime}min Humane Labs`);
+            if (emsTime > 0) punishments.push(`${emsTime}min EMS-Dienst`);
+            if (ngRounds > 0) punishments.push(`${ngRounds}x NG-Runde${ngRounds > 1 ? 'n' : ''}`);
+            if (fineAmount > 0) punishments.push(`$${fineAmount.toLocaleString('de-DE')},- Geldstrafe`);
+            if (hasStrike) punishments.push('1x Strike');
+            if (hasTermination) punishments.push('Kündigung');
+
+            let punishmentText = punishments.map(p => `> - ${p}`).join('\n');
+
+            const sanction = `Sehr geehrter @${name},
 
 Ihnen wurde eine Sanktion in Folge vorliegender Beweise ausgestellt.
 
 Verstoß:
-> - ${beschuldigung}
+${violations}
 
 Strafe:
-${strafenList.map(s => `> ${s}`).join('\n')}
+${punishmentText}
 
 Sollte die Sanktion innerhalb **48h** nicht beglichen sein, muss mit weiteren Schritten gerechnet werden.
 Bis sie die Sanktion abgeleistet haben erhalten sie **Rang 2**. Achten sie beim Abarbeiten auf eine gültige verwertbare Bodycam!
 In Sanktionen wird **NICHT** unnötig kommentiert.
 
 Mit freundlichen Grüßen,
-@${deinRang}`;
+${name} | ${id}
+-# Intelligence Unit
+-# ${role}`;
 
-            document.getElementById('preview').textContent = text;
-            document.getElementById('copyBtn').classList.add('show');
+            document.getElementById('preview').textContent = sanction;
         }
 
-        function copySanktion() {
-            const text = document.getElementById('preview').textContent;
-            navigator.clipboard.writeText(text).then(() => {
+        // Update preview on input change
+        function updatePreview() {
+            generateSanction();
+        }
+
+        // Copy to clipboard
+        function copySanction() {
+            const preview = document.getElementById('preview').textContent;
+            if (!preview) {
+                alert('Bitte erst eine Sanktion generieren!');
+                return;
+            }
+            navigator.clipboard.writeText(preview).then(() => {
                 alert('✓ In Zwischenablage kopiert!');
             });
         }
 
-        initSanctionsList();
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            // Add additional tab logic here if needed
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            initializeViolations();
+        });
+
+        // Real-time updates
+        document.getElementById('officerName').addEventListener('change', updatePreview);
+        document.getElementById('officerId').addEventListener('change', updatePreview);
+        document.getElementById('officerRole').addEventListener('change', updatePreview);
+        document.getElementById('hlTime').addEventListener('change', updatePreview);
+        document.getElementById('emsTime').addEventListener('change', updatePreview);
+        document.getElementById('ngRounds').addEventListener('change', updatePreview);
+        document.getElementById('fineAmount').addEventListener('change', updatePreview);
+        document.getElementById('strikeCheck').addEventListener('change', updatePreview);
+        document.getElementById('terminationCheck').addEventListener('change', updatePreview);
     </script>
 </body>
 </html>
