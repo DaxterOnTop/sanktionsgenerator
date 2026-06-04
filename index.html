@@ -71,20 +71,23 @@
             color: #888;
             font-size: 11px;
         }
-        /* TABS */
+        /* TABS & SANCTIONS ROW */
         .tabs-container {
             position: fixed;
             top: 50px;
             left: 280px;
             right: 0;
-            height: 45px;
             background-color: #0a0e27;
             border-bottom: 1px solid #1a1f2e;
+            z-index: 99;
+        }
+        .tabs-row {
             display: flex;
             align-items: center;
             padding: 0 20px;
+            height: 45px;
             gap: 20px;
-            z-index: 99;
+            border-bottom: 1px solid #1a1f2e;
         }
         .tab-button {
             background: none;
@@ -103,6 +106,54 @@
         .tab-button.active {
             color: #2563eb;
             border-bottom-color: #2563eb;
+        }
+        .sanctions-row {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            height: 50px;
+            gap: 15px;
+            font-size: 11px;
+        }
+        .sanction-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sanction-label {
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+        .sanction-dropdown {
+            background-color: #1a1f2e;
+            border: 1px solid #2a3142;
+            color: #c5c7c9;
+            padding: 5px 8px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            min-width: 70px;
+        }
+        .sanction-dropdown:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        .sanction-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .sanction-checkbox-label {
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            font-size: 10px;
+            white-space: nowrap;
+            cursor: pointer;
         }
         /* SIDEBAR */
         .sidebar {
@@ -185,10 +236,10 @@
         }
         /* MAIN CONTENT */
         .main-content {
-            margin-top: 95px;
+            margin-top: 145px;
             margin-left: 280px;
             width: calc(100% - 280px);
-            height: calc(100vh - 95px);
+            height: calc(100vh - 145px);
             display: flex;
             flex-direction: column;
         }
@@ -224,9 +275,7 @@
             font-weight: 500;
             text-transform: uppercase;
         }
-        .input-group input,
-        .input-group textarea,
-        .input-group select {
+        .input-group textarea {
             width: 100%;
             background-color: #1a1f2e;
             border: 1px solid #2a3142;
@@ -235,54 +284,12 @@
             border-radius: 3px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
+            height: 120px;
+            resize: none;
         }
-        .input-group input:focus,
-        .input-group textarea:focus,
-        .input-group select:focus {
+        .input-group textarea:focus {
             outline: none;
             border-color: #2563eb;
-        }
-        .sanctions-box {
-            background-color: #151a28;
-            border: 1px solid #2a3142;
-            border-radius: 3px;
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-        .sanctions-box-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: #888;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        .sanction-item {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
-        }
-        .sanction-item input[type="checkbox"] {
-            width: 14px;
-            height: 14px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .sanction-item input[type="text"] {
-            flex: 1;
-            background-color: #1a1f2e;
-            border: 1px solid #2a3142;
-            color: #c5c7c9;
-            padding: 5px 8px;
-            border-radius: 2px;
-            font-size: 10px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .sanction-item label {
-            font-size: 10px;
-            color: #666;
-            white-space: nowrap;
-            flex-shrink: 0;
         }
         .generate-button {
             width: 100%;
@@ -366,7 +373,7 @@
             </div>
             <div class="header-info">Made by Sander Beck | 11.03.12 | Stand: 29.5.2026 | Keine Haftung für Falsche Ausgabe</div>
             <div class="header-right">
-                <span>🔘 RESET</span>
+                <span>🔄 RESET</span>
                 <span>DESIGN</span>
             </div>
         </div>
@@ -409,10 +416,86 @@
             </div>
         </div>
 
-        <!-- TABS -->
+        <!-- TABS & SANCTIONS -->
         <div class="tabs-container">
-            <button class="tab-button active" onclick="switchTab('sanktion', event)">| VORSCHAU</button>
-            <button class="tab-button" onclick="switchTab('akte', event)">📁 AKTE</button>
+            <div class="tabs-row">
+                <button class="tab-button active" onclick="switchTab('sanktion', event)">| VORSCHAU</button>
+                <button class="tab-button" onclick="switchTab('akte', event)">📁 AKTE</button>
+            </div>
+            <div class="sanctions-row">
+                <div class="sanction-group">
+                    <label class="sanction-label">HUMANE LABS</label>
+                    <select id="hl" class="sanction-dropdown" onchange="generateSanktion()">
+                        <option>-</option>
+                        <option>5min</option>
+                        <option>10min</option>
+                        <option>15min</option>
+                        <option>20min</option>
+                        <option>25min</option>
+                        <option>30min</option>
+                        <option>35min</option>
+                        <option>40min</option>
+                        <option>45min</option>
+                        <option>50min</option>
+                        <option>55min</option>
+                        <option>60min</option>
+                    </select>
+                </div>
+
+                <div class="sanction-group">
+                    <label class="sanction-label">NG-RUNDEN</label>
+                    <select id="ng" class="sanction-dropdown" onchange="generateSanktion()">
+                        <option>-</option>
+                        <option>1x</option>
+                        <option>2x</option>
+                        <option>3x</option>
+                        <option>4x</option>
+                        <option>5x</option>
+                    </select>
+                </div>
+
+                <div class="sanction-group">
+                    <label class="sanction-label">LOBBYARBEIT</label>
+                    <select id="lobby" class="sanction-dropdown" onchange="generateSanktion()">
+                        <option>-</option>
+                        <option>5min</option>
+                        <option>10min</option>
+                        <option>15min</option>
+                        <option>20min</option>
+                        <option>25min</option>
+                        <option>30min</option>
+                        <option>35min</option>
+                        <option>40min</option>
+                        <option>45min</option>
+                        <option>50min</option>
+                        <option>55min</option>
+                        <option>60min</option>
+                    </select>
+                </div>
+
+                <div class="sanction-group">
+                    <label class="sanction-label">GELDSTRAFE</label>
+                    <select id="geld" class="sanction-dropdown" onchange="generateSanktion()">
+                        <option>-</option>
+                        <option>$50.000</option>
+                        <option>$100.000</option>
+                        <option>$150.000</option>
+                        <option>$200.000</option>
+                        <option>$250.000</option>
+                        <option>$300.000</option>
+                    </select>
+                </div>
+
+                <div class="sanction-group">
+                    <input type="checkbox" id="strike" class="sanction-checkbox" onchange="generateSanktion()">
+                    <label for="strike" class="sanction-checkbox-label">STRIKE VERHÄNGEN</label>
+                </div>
+
+                <div class="sanction-group">
+                    <input type="checkbox" id="kuen" class="sanction-checkbox" onchange="generateSanktion()">
+                    <label for="kuen" class="sanction-checkbox-label">KÜNDIGUNG</label>
+                </div>
+            </div>
         </div>
 
         <!-- MAIN CONTENT -->
@@ -423,50 +506,17 @@
                     <!-- INPUT AREA -->
                     <div class="input-area">
                         <div class="input-group">
-                            <label>VERSTOß</label>
-                            <textarea id="beschuldigung" placeholder="z.B. §1.0 Respektloses Verhalten" style="height: 80px;"></textarea>
+                            <label>VERSTOSS</label>
+                            <textarea id="beschuldigung" placeholder="z.B. §1.0 Respektloses Verhalten" onchange="generateSanktion()"></textarea>
                         </div>
 
-                        <div class="sanctions-box">
-                            <div class="sanctions-box-title">Sanktionen</div>
-                            <div class="sanction-item">
-                                <input type="checkbox" id="cb_hl">
-                                <input type="text" id="val_hl" placeholder="60">
-                                <label>min Humane Labs</label>
-                            </div>
-                            <div class="sanction-item">
-                                <input type="checkbox" id="cb_ng">
-                                <input type="text" id="val_ng" placeholder="3">
-                                <label>x NG-Runden</label>
-                            </div>
-                            <div class="sanction-item">
-                                <input type="checkbox" id="cb_lobby">
-                                <input type="text" id="val_lobby" placeholder="60">
-                                <label>min Lobbyarbeit</label>
-                            </div>
-                            <div class="sanction-item">
-                                <input type="checkbox" id="cb_geld">
-                                <input type="text" id="val_geld" placeholder="100.000">
-                                <label>Geldstrafe</label>
-                            </div>
-                            <div class="sanction-item">
-                                <input type="checkbox" id="cb_strike">
-                                <input type="text" id="val_strike" placeholder="1">
-                                <label>x Strike</label>
-                            </div>
-                            <div class="sanction-item">
-                                <input type="checkbox" id="cb_kuen">
-                                <label style="margin-left: 22px;">Kündigung</label>
-                            </div>
-                        </div>
-
-                        <button class="generate-button" onclick="generateSanktion()">SANKTION GENERIEREN</button>
+                        <button class="generate-button" onclick="generateSanktion()">✓ SANKTION GENERIEREN</button>
                     </div>
 
                     <!-- PREVIEW AREA -->
                     <div class="preview-area">
                         <div class="preview-label">📋 SANKTION</div>
-                        <div class="preview-box" id="preview">Keine Verstöße ausgewählt - Bitte links auswählen</div>
+                        <div class="preview-box" id="preview">Keine Verstöße ausgewählt - Bitte oben auswählen</div>
                         <button class="copy-button" id="copyBtn" onclick="copySanktion()">📋 KOPIEREN</button>
                     </div>
                 </div>
@@ -492,29 +542,24 @@
             const beschuldigung = document.getElementById('beschuldigung').value;
             const deinRang = document.getElementById('deinRang').value;
             
-            if (!name || !beschuldigung) {
-                alert('Bitte fülle Name und Verstoß aus!');
-                return;
-            }
+            const hl = document.getElementById('hl').value;
+            const ng = document.getElementById('ng').value;
+            const lobby = document.getElementById('lobby').value;
+            const geld = document.getElementById('geld').value;
+            const strike = document.getElementById('strike').checked;
+            const kuen = document.getElementById('kuen').checked;
 
             let strafenList = [];
-            if (document.getElementById('cb_hl').checked && document.getElementById('val_hl').value) {
-                strafenList.push(`- ${document.getElementById('val_hl').value}min Humane Labs`);
-            }
-            if (document.getElementById('cb_ng').checked && document.getElementById('val_ng').value) {
-                strafenList.push(`- ${document.getElementById('val_ng').value}x NG-Runden`);
-            }
-            if (document.getElementById('cb_lobby').checked && document.getElementById('val_lobby').value) {
-                strafenList.push(`- ${document.getElementById('val_lobby').value}min Lobbyarbeit`);
-            }
-            if (document.getElementById('cb_geld').checked && document.getElementById('val_geld').value) {
-                strafenList.push(`- $${document.getElementById('val_geld').value},- Geldstrafe`);
-            }
-            if (document.getElementById('cb_strike').checked && document.getElementById('val_strike').value) {
-                strafenList.push(`- ${document.getElementById('val_strike').value}x Strike`);
-            }
-            if (document.getElementById('cb_kuen').checked) {
-                strafenList.push(`- Kündigung`);
+            if (hl !== '-') strafenList.push(`- ${hl} Humane Labs`);
+            if (ng !== '-') strafenList.push(`- ${ng} NG-Runden`);
+            if (lobby !== '-') strafenList.push(`- ${lobby} Lobbyarbeit`);
+            if (geld !== '-') strafenList.push(`- ${geld},-`);
+            if (strike) strafenList.push(`- 1x Strike`);
+            if (kuen) strafenList.push(`- Kündigung`);
+
+            if (!name || !beschuldigung || strafenList.length === 0) {
+                document.getElementById('preview').textContent = 'Bitte Name, Verstoß und mindestens eine Sanktion auswählen';
+                return;
             }
 
             const text = `Sehr geehrter @${name},
