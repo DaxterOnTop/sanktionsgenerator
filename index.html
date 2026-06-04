@@ -344,11 +344,15 @@
             <div class="sidebar-section">
                 <div class="sidebar-label">👤 Beamte Informationen</div>
                 <input type="text" id="officerName" placeholder="Daxter Kush" value="Daxter Kush">
-                <input type="number" id="officerId" placeholder="110812" value="110812">
+                <input type="text" id="officerId" placeholder="110812" value="110812">
                 <select id="officerRank">
-                    <option value="02. Police Officer">02. Police Officer</option>
-                    <option value="03. Senior Police Officer">03. Senior Police Officer</option>
-                    <option value="04. Detective">04. Detective</option>
+                    <option value="Director of I.U.">Director of I.U.</option>
+                    <option value="Dep. Director of I.U.">Dep. Director of I.U.</option>
+                    <option value="I.U. Supervising Commander">I.U. Supervising Commander</option>
+                    <option value="I.U. Commander">I.U. Commander</option>
+                    <option value="I.U. Senior Investigator">I.U. Senior Investigator</option>
+                    <option value="I.U. Investigator">I.U. Investigator</option>
+                    <option value="I.U. Recruit">I.U. Recruit</option>
                 </select>
                 <input type="text" id="officerRole" placeholder="I.A. Member, Leaderschafft">
             </div>
@@ -434,7 +438,7 @@
             { code: '1.0', title: 'Respektloses Verhalten', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '1.1', title: 'Befehlsverweigerung (ggü. ranghöheren, Einsatzteilung oder Leitstelle)', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '1.2', title: 'Fragen nach Belohnung', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. 7-14 Tage Upranksperre, max. $50.000' },
-            { code: '1.3', title: 'Namensänderung ohne Beantragung und Bestatigung (Meldung an HR oder Leaderschafft nötig)', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '1.3', title: 'Namensänderung ohne Beantragung und Bestätigung (Meldung an HR oder Leaderschafft nötig)', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
             { code: '1.4', title: 'Nicht Erscheinen zu Gesprächen / Ausbildungsterminen / Meetings ohne Anmeldung', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 3x NG, max. 7 Tage Upranksperre' },
             { code: '1.5', title: 'Stören / Mithören von Privatgesprächen ohne Erlaubnis', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 30min HL, max. 30min EMS, max. 5x NG, max. $50.000, (✓) Strike optional' },
             { code: '1.6', title: 'Diffamieren anderer staatlicher Organisationen', category: 'Zwischenmenschlicher Umgang', penalties: 'max. 60min HL, max. 60min EMS, max. 3x NG, max. $100.000, ✓ Strike' },
@@ -444,22 +448,22 @@
             { code: '2.0', title: 'Missachtung der Dienstpflicht (18:00 – 22:00 Uhr, Wochends 18:00 – 23:00 Uhr)', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $50.000' },
             { code: '2.1', title: 'Vorsätzliches Falschaussagen von Bußgeldern oder Fahndungstufen', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. 7 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '2.2', title: 'Mitnahme von Zivilisten während des Dienstes (Nur im Notfall gestattet)', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $50.000' },
-            { code: '2.3', title: 'Das Tragen von komplett schwarz tatowierten Armen / Füßen', category: 'Dienstvergehen', penalties: 'max. 30min HL, (kein EMS), max. 5x NG, max. $50.000' },
+            { code: '2.3', title: 'Das Tragen von komplett schwarz tätowierten Armen / Füßen', category: 'Dienstvergehen', penalties: 'max. 30min HL, (kein EMS), max. 5x NG, max. $50.000' },
             { code: '2.4', title: 'Das befahren des Ghettos im Dienst ohne Berechtigung / Spezialbeamte', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
-            { code: '2.5', title: 'Missbrauch des Tazers / sinntloses Tazern', category: 'Dienstvergehen', penalties: 'max. 45min HL, max. 45min EMS, max. 5x NG, max. $100.000, ✓ Strike' },
+            { code: '2.5', title: 'Missbrauch des Tazers / sinnloses Tazern', category: 'Dienstvergehen', penalties: 'max. 45min HL, max. 45min EMS, max. 5x NG, max. $100.000, ✓ Strike' },
             { code: '2.6', title: 'Schlafen am/im HQ (Ausnahme: Pausenraum)', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $30.000' },
             { code: '2.7', title: 'Festnahme von Personen ohne Begründung / Verdacht / Missbrauch der Handschellen', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '2.8', title: 'Markierte Mitarbeiter vor fremden / externen Personen mit dem Namen ansprechen', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $30.000' },
             { code: '2.9', title: 'Ergreifen ohne Genehmigung', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 45min EMS, max. 5x NG, max. $50.000' },
             { code: '2.10', title: 'Unverhältnismäßige Waffengewalt gegenüber Wehrlosen', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. 7 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
-            { code: '2.11', title: 'Parken von Privatfahrzeugen auf dem Gelände des LSPDs (Ausnahme: Vorgeshende Parkplätze)', category: 'Dienstvergehen', penalties: 'max. 15 min HL, (kein EMS), max. 1x NG, max. $30.000' },
+            { code: '2.11', title: 'Parken von Privatfahrzeugen auf dem Gelände des LSPDs (Ausnahme: Vorgeshende Parkplätze)', category: 'Dienstvergehen', penalties: 'max. 15min HL, (kein EMS), max. 1x NG, max. $30.000' },
             { code: '2.12', title: 'Nicht schießen der Türen', category: 'Dienstvergehen', penalties: '(kein HL), (kein EMS), max. 1x NG, max. $30.000' },
             { code: '2.13', title: 'Nicht erscheinen zu Pflichtevents ohne Anmeldung', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 3x NG, max. $50.000' },
-            { code: '2.14', title: 'Grindlose Vergabe von Einzelhaft', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $50.000' },
-            { code: '2.15', title: 'Nicht dokumentieren von UC-Einheinten (Ausnahme: Leaderschafft)', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $100.000' },
+            { code: '2.14', title: 'Grundlose Vergabe von Einzelhaft', category: 'Dienstvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. $50.000' },
+            { code: '2.15', title: 'Nicht dokumentieren von UC-Einheiten (Ausnahme: Leaderschafft)', category: 'Dienstvergehen', penalties: 'max. 60min HL, max. 60min EMS, max. 5x NG, max. $100.000' },
 
             // 3. Funk-, Disziplin- und Leitstellenvergehren
-            { code: '3.0', title: 'Versäumen wichtiger Funksprüche (1 Person pro Streife muss den Funk angeschaltet haben)', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 60min EMS, max. 2x NG, max. $50.000' },
+            { code: '3.0', title: 'Versäumen wichtiger Funksprüche (1 Person pro Streife muss den Funk eingeschaltet haben)', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 60min EMS, max. 2x NG, max. $50.000' },
             { code: '3.1', title: 'Mitarbeiterbeschwerden via T-Funk', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
             { code: '3.2', title: 'Nicht nutzen der Leitstelle / Eintragung sowie Ausstragung vergessen', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
             { code: '3.3', title: 'Nutzung des Sprachfunks außerhalb des Dienstes', category: 'Funk-, Disziplin- und Leitstellenvergehren', penalties: 'max. 30min HL, (kein EMS), max. 2x NG, max. $50.000' },
@@ -473,21 +477,21 @@
             { code: '4.1', title: 'Verstoß gegen die Waffenordnung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
             { code: '4.2', title: 'Verstoß gegen die Fahrzeugordnung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
             { code: '4.3', title: 'Das Nutzen von Einsatzmitteln ohne gültige Ausbildung', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $50.000' },
-            { code: '4.4', title: 'Stehen in einem Fahrzeug / nicht betanken oder reparieren von Fahrzeugen nach dem Dienst', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 15 min HL, max. 30min EMS, max. 1x NG, max. $30.000' },
+            { code: '4.4', title: 'Stehlen in einem Fahrzeug / nicht betanken oder reparieren von Fahrzeugen nach dem Dienst', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 15min HL, max. 30min EMS, max. 1x NG, max. $30.000' },
             { code: '4.5', title: 'Das Nutzen des Fahrzeugs zum privaten Gebrauch, ohne Berechtigung / Missbrauch der Handbremsen', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '4.6', title: 'Nicht entfernen von Absicherungen (Barrikaden, Absperrbänder) / Missbrauch von Absicherungen', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
             { code: '4.7', title: 'Im Dienst ohne gültigen Waffenschein / Lizenzen', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 45min EMS, max. 5x NG, max. $100.000, ✓ Strike, ✓ Kündigung' },
-            { code: '4.8', title: 'Entsorging von Waffen, Munition, Westen und Masken der Organisation außerhalb des Lagers', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000' },
+            { code: '4.8', title: 'Entsorgung von Waffen, Munition, Westen und Masken der Organisation außerhalb des Lagers', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000' },
             { code: '4.9', title: 'Tragen von Abteilungsoutfits / Kleiderteileen ohne in der Abteilung zu sein', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
-            { code: '4.10', title: 'Tragen von Balalcavas im Dienst ohne Notwendigkeit die Identität zu schützen (Ausnahme: Spezialeinheit)', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
+            { code: '4.10', title: 'Tragen von Balaklavas im Dienst ohne Notwendigkeit die Identität zu schützen (Ausnahme: Spezialeinheit)', category: 'Vergehren im Bezug auf Ausrüstung, Kleidung und Fahrzeuge', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000' },
 
             // 5. Einsatzvergehen
             { code: '5.0', title: 'Nicht Anfahren von Event, Globals, Locals, Shoproaubs und 11-99 ohne wichtigen Grund und Anmeldung im Chat Funk', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $100.000' },
             { code: '5.1', title: 'Betreten von Grundstücken ohne Durchsuchungsbefehl ist verboten, ausgenommen es ist Gefahr im Vollzug / Strafbestand', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 3x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
-            { code: '5.2', title: 'Anstiftung zu einem internen Regelverstoß', category: 'Einsatzvergehen', penalties: 'max. 60min HL, max. 50min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
-            { code: '5.3', title: 'Volkaufbau / Einsatz entfernen einer Stoppauforderung oder Motorblockers auf Kollegen', category: 'Einsatzvergehen', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000' },
+            { code: '5.2', title: 'Anstiftung zu einem internen Regelverstoß', category: 'Einsatzvergehen', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
+            { code: '5.3', title: 'Fahrzeugaufbau / Einsatz entfernen einer Stoppauforderung oder Motorblocker auf Kollegen', category: 'Einsatzvergehen', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000' },
             { code: '5.4', title: 'Vom Konvoi / Einsatz entfernen ohne Genehmigung', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 30min EMS, max. 2x NG, max. $50.000, (✓) Strike optional' },
-            { code: '5.5', title: 'Tanzen / unangemessene Verhalten / reden bei Einsätzen / Aufstellungen / Events', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 60min EMS, max. 2x NG, max. $50.000' },
+            { code: '5.5', title: 'Tanzen / unangemessenes Verhalten / reden bei Einsätzen / Aufstellungen / Events', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 60min EMS, max. 2x NG, max. $50.000' },
             { code: '5.6', title: 'Störeinsätze / wichtiger Einsatz - Kontrollen, Verhaftungen', category: 'Einsatzvergehen', penalties: 'max. 30min HL, max. 45min EMS, max. 2x NG, max. $100.000' },
 
             // 6. Schwerwegende Vergehren
@@ -497,13 +501,13 @@
             { code: '6.3', title: 'Betreten / Gaffen / Aufenthalt bei Einsatzstellen außerhalb des Dienstes', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '6.4', title: 'Datenschutzverletzung', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
             { code: '6.5', title: 'Bewerbung bei einer anderen Organisation ohne vorheriger Absprache mit der HR - Leitung / Leaderschafft', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike' },
-            { code: '6.6', title: 'Unagebrachtes Fehlen als 72 Stunden (+weitere Kulanz möglich) "Strike oder Kündigung"', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
-            { code: '6.7', title: 'Fehlende Bodycam bei Anfrage der Justiz, oder interner zugelassenen Personen/Abteilungen', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, (✓) Kündigung optional' },
-            { code: '6.8', title: 'Mangelnde Aktivät/Initiative, Mangelnde Logaktivitat', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
+            { code: '6.6', title: 'Unangebrachtes Fehlen als 72 Stunden (+weitere Kulanz möglich) "Strike oder Kündigung"', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
+            { code: '6.7', title: 'Fehlende Bodycam bei Anfrage der Justiz, oder intern zugelassenen Personen/Abteilungen', category: 'Schwerwegende Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. $100.000, ✓ Strike, (✓) Kündigung optional' },
+            { code: '6.8', title: 'Mangelnde Aktivität/Initiative, Mangelnde Logaktivität', category: 'Schwerwegende Vergehren', penalties: 'Strike oder Kündigung' },
 
             // 7. Sonstige Vergehren
             { code: '7.0', title: 'Sonstiges Vergehren (Variabel)', category: 'Sonstige Vergehren', penalties: 'max. 60min HL, max. 90min EMS, max. 5x NG, max. 14 Tage Upranksperre, max. $100.000, ✓ Strike, ✓ Kündigung' },
-            { code: '7.1', title: 'Mehrfache Sanktionen in der letzter Zeit, mit dem selben Sanktionsgrund', category: 'Sonstige Vergehren', penalties: 'Strike oder Kündigung' }
+            { code: '7.1', title: 'Mehrfache Sanktionen in der letzten Zeit, mit dem selben Sanktionsgrund', category: 'Sonstige Vergehren', penalties: 'Strike oder Kündigung' }
         ];
 
         let selectedViolations = [];
@@ -621,7 +625,6 @@ ${name} | ${id}
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            // Add additional tab logic here if needed
         }
 
         // Initialize on page load
